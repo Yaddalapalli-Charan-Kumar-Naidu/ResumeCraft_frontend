@@ -1,8 +1,13 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Title: Online Resume Builder Using MERN
 
-Currently, two official plugins are available:
+The goal of this project is to build an Online Resume Builder using the MERN (MongoDB, Express, React, Node.js) stack. This platform will help users create professional, visually appealing 
+resumes effortlessly.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Features:
+    =>Allow users to choose from various pre-designed resume templates.
+    =>Enable users to input their details (e.g., education, experience, skills) through a user-friendly form.
+    =>Provide real-time previews of the resume while editing.
+    Offer features to download the resume in PDF format or share a link directly.
+    =>Allow registered users to save and manage multiple resumes.
+    =>Include optional tips and examples to guide users in writing impactful content for their resumes
