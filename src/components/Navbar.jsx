@@ -14,7 +14,7 @@ export default function Navbar() {
         <ul className="flex items-center space-x-4">
           {navbarLinks.map((item,index)=>(
             <li key={index} className="p-2 text-center">
-              <a href={`/${item.toLowerCase()}`} className="hover:text-blue-500">{item}</a>
+              <a href={`/${item.toLowerCase().split("/")[0]}`} className="hover:text-blue-500">{item}</a>
               </li>
           ))}
         </ul>
