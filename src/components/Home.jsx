@@ -27,7 +27,7 @@ export default function Home() {
             future today—your dream job is just a resume away!
           </div>
           <div className="flex flex-col md:flex-row justify-around">
-          <button className="border rounded-xl px-8 py-2 my-3 bg-primary hover:scale-105 hover:bg-secondary-400 w-full md:w-auto">
+          <button className="border rounded-xl text-white px-8 py-2 my-3 bg-primary hover:scale-105 hover:bg-secondary-400 w-full md:w-auto">
               Create New Resume
             </button>
             <button className="border rounded-xl px-8 py-2 my-3 border border-primary hover:scale-110 hover:bg-white w-full md:w-auto">

@@ -2,8 +2,8 @@ import React, { useContext, useState } from "react";
 import ResumeContext from "../context/ResumeContext";
 
 const ResumeTemplate1 = () => {
-  const { data } = useContext(ResumeContext); // Destructure data directly from context
-  const [resumeData, setResumeData] = useState(data); // Using state to manage data
+  const { resumeData } = useContext(ResumeContext); // Destructure data directly from context
+
 
   return (
     <div className="resume-container" style={styles.container}>
@@ -20,11 +20,9 @@ const ResumeTemplate1 = () => {
 
       {/* Welcome Section */}
       <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Welcome to RenderCV!</h2>
+        <h2 style={styles.sectionTitle}>Professional summary</h2>
         <p>
-          RenderCV is a LaTeX-based CV/resume version-control and maintenance app. It allows you to
-          create a high-quality CV or resume as a PDF file from a YAML file, with Markdown syntax
-          support and complete control over the LaTeX code.
+          {resumeData.professionalSummary}
         </p>
       </div>
 

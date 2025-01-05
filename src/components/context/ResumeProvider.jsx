@@ -6,7 +6,7 @@ function ResumeProvider({ children }) {
   const [resumeData, setResumeData] = useState(data); // Renamed variable to avoid conflict with imported 'data'
 
   return (
-    <ResumeContext.Provider value={{ data: resumeData ,setResumeData}}>
+    <ResumeContext.Provider value={{ resumeData ,setResumeData}}>
       {children}
     </ResumeContext.Provider>
   );
