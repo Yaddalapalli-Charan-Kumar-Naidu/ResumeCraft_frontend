@@ -4,18 +4,15 @@ export default function Home() {
   return (
     <div className="w-screen border bg-gray-100">
       <br />
-      {/* Use flex-col for small screens and md:flex-row-reverse for larger screens */}
       <div className="flex flex-col md:flex-row-reverse justify-center items-center w-full h-full px-4">
-        {/* Image section - Adjusted width and height for responsiveness */}
         <div className="w-full md:w-[50vw]">
           <img
             src="hero2.avif"
-            className="w-full h-auto" // Ensures image scales properly for all screen sizes
+            className="w-full h-auto" 
             alt="Hero"
           />
         </div>
 
-        {/* Text section - Adjusted padding and width for responsiveness */}
         <div className="w-full md:w-[50vw] p-4">
           <div className="text-2xl font-bold my-3 text-primary">
             Fast. Simple. Impactful.
@@ -29,7 +26,6 @@ export default function Home() {
             personality on a resume that gets noticed. Build your professional
             future today—your dream job is just a resume away!
           </div>
-          {/* Buttons are spaced evenly and scale slightly on hover */}
           <div className="flex flex-col md:flex-row justify-around">
           <button className="border rounded-xl px-8 py-2 my-3 bg-primary hover:scale-105 hover:bg-secondary-400 w-full md:w-auto">
               Create New Resume
@@ -40,8 +36,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      {/* Step-by-step section - Responsive grid layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-center m-2">
         <div>
           <img src="step1.png" alt="Step 1" className="mx-auto w-1/2 md:w-2/3" />
@@ -68,13 +62,12 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Highlight section - Adjusted grid layout for responsiveness */}
       <div className="grid grid-cols-1 md:grid-cols-2 bg-gray-200 rounded-lg shadow-lg">
         <div>
           <img
             src="login.webp"
             alt="Resume Example"
-            className="w-full h-auto" // Scales image properly for all screen sizes
+            className="w-full h-auto" 
           />
         </div>
         <div className="text-center p-8">
