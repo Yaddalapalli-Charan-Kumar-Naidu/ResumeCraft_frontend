@@ -10,29 +10,31 @@ const data={
     "designation": "Senior Software Engineer",
     "education": [
       {
+        "degree": "M.Tech in Software Engineering",
+        "institution": "ABC University",
+        "year": "2020"
+      },
+      {
         "degree": "B.Tech in Computer Science",
         "institution": "XYZ University",
         "year": "2018"
       },
-      {
-        "degree": "M.Tech in Software Engineering",
-        "institution": "ABC University",
-        "year": "2020"
-      }
+      
     ],
     "experience": [
+      {
+        "jobTitle": "Senior Software Engineer",
+        "company": "Innovatech",
+        "duration": "Jan 2022 - Present",
+        "description": "Leading a team of developers to build scalable web solutions."
+      },
       {
         "jobTitle": "Software Engineer",
         "company": "TechCorp",
         "duration": "Jan 2019 - Dec 2021",
         "description": "Developed and maintained web applications using React and Node.js."
       },
-      {
-        "jobTitle": "Senior Software Engineer",
-        "company": "Innovatech",
-        "duration": "Jan 2022 - Present",
-        "description": "Leading a team of developers to build scalable web solutions."
-      }
+      
     ],
     "skills": ["JavaScript", "React", "Node.js", "MongoDB", "Tailwind CSS"],
     "hobbies": ["Chess", "Reading", "Cycling"],

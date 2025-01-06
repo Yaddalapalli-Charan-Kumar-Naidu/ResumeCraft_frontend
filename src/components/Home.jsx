@@ -70,7 +70,7 @@ export default function Home() {
             className="w-full h-auto" 
           />
         </div>
-        <div className="text-center p-8">
+        <div className="text-center p-8 flex flex-col justify-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
             Change Your Resume. Change Your Life.
           </h1>
@@ -81,18 +81,17 @@ export default function Home() {
             templates, you can give your resume a fresh look and highlight your
             skills like never before.
           </p>
-          <ul className="list-disc list-inside text-lg text-gray-700 mb-6">
-            <li>
+          <ul className="list-disc list-inside text-lg text-gray-700">
+            <li className="my-1">
               Click on ready-to-use expert suggestions to build your resume in
               minutes.
             </li>
-            <li>
+            <li className="my-1">
               Impress recruiters with sleek, professional designs that capture
               attention.
             </li>
-            <li>
-              Show employers your true potential—you’re the best candidate for
-              the job.
+            <li className="my-1">
+              Show employers your true potential—you’re the best candidate for the job.
             </li>
           </ul>
         </div>

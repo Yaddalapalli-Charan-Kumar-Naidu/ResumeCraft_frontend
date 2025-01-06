@@ -1,39 +1,59 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import ResumeContext from "../context/ResumeContext";
 
 const ResumeTemplate1 = () => {
   const { resumeData } = useContext(ResumeContext); // Destructure data directly from context
 
-
   return (
-    <div className="resume-container" style={styles.container}>
+    <div className="resume-container mb-2 text-sm" style={styles.container}>
       {/* Header Section */}
       <div style={styles.header}>
-        <h1 style={styles.name}>{resumeData.firstName} {resumeData.lastName}</h1>
+        <h1 style={styles.name}>
+          {resumeData.firstName} {resumeData.lastName}
+        </h1>
+        <p style={styles.title}>{resumeData.title}</p>
         <p style={styles.contactInfo}>
-          Your Location | {resumeData.email} | {resumeData.phone} | {resumeData.socialMediaLinks.portfolio}
+          {resumeData.email} | {resumeData.phone} |{" "}
+          {resumeData.socialMediaLinks.portfolio}
         </p>
         <p style={styles.links}>
-          {resumeData.socialMediaLinks.linkedIn} | {resumeData.socialMediaLinks.github}
+          <a href={resumeData.socialMediaLinks.linkedIn} target="_blank">
+            {resumeData.socialMediaLinks.linkedIn}{" "}
+          </a>
+          |{" "}
+          <a href={resumeData.socialMediaLinks.github} target="_blank">
+            {resumeData.socialMediaLinks.github}
+          </a>
         </p>
       </div>
 
-      {/* Welcome Section */}
+      {/* Professional Summary Section */}
       <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Professional summary</h2>
-        <p>
-          {resumeData.professionalSummary}
-        </p>
+        <h2 style={styles.sectionTitle}>Professional Summary</h2>
+        <p>{resumeData.professionalSummary}</p>
+      </div>
+
+      {/* Skills Section */}
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Skills</h2>
+        <ul className="list-disc list-inside">
+          {resumeData.skills.map((skill, index) => (
+            <li key={index}>{skill}</li>
+          ))}
+        </ul>
       </div>
 
       {/* Education Section */}
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Education</h2>
         {resumeData.education.map((edu, index) => (
-          <p key={index}>
-            <strong>{edu.institution}</strong>, {edu.degree}
-            <span style={styles.dates}>{edu.year}</span>
-          </p>
+          <div key={index}>
+            <p>
+              <strong>{edu.degree}</strong>, {edu.institution}
+              <span style={styles.dates}>{edu.year}</span>
+            </p>
+            {edu.cgpa && <p>CGPA: {edu.cgpa}</p>}
+          </div>
         ))}
       </div>
 
@@ -43,32 +63,12 @@ const ResumeTemplate1 = () => {
         {resumeData.experience.map((exp, index) => (
           <div key={index}>
             <p>
-              <strong>{exp.jobTitle}, {exp.company}</strong> – {exp.location || "Location not specified"}
+              <strong>{exp.jobTitle}</strong>, {exp.company}
               <span style={styles.dates}>{exp.duration}</span>
             </p>
-            <ul className="list-disc">
-              <li>{exp.description}</li>
-            </ul>
+            <p>{exp.description}</p>
           </div>
         ))}
-      </div>
-
-      {/* Publications Section */}
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Publications</h2>
-        {resumeData.publications && resumeData.publications.length > 0 ? (
-          resumeData.publications.map((pub, index) => (
-            <p key={index}>
-              <strong>{pub.title}</strong>
-              <br />
-              {pub.authors}
-              <br />
-              {pub.doi}
-            </p>
-          ))
-        ) : (
-          <p>No publications listed.</p>
-        )}
       </div>
 
       {/* Projects Section */}
@@ -78,12 +78,54 @@ const ResumeTemplate1 = () => {
           <div key={index}>
             <p>
               <strong>{project.title}</strong>
-              <span style={styles.link}>{project.link}</span>
+              {project.link && (
+                <span style={styles.link}>
+                  {" "}
+                  |{" "}
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Link
+                  </a>
+                </span>
+              )}
             </p>
             <p>{project.description}</p>
-            <p>Tools Used: {project.technologies.join(", ")}</p>
+            <p>Technologies: {project.technologies.join(", ")}</p>
           </div>
         ))}
+      </div>
+
+      {/* Certifications Section */}
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Certifications</h2>
+        {resumeData.certifications.map((cert, index) => (
+          <div key={index} style={styles.certificationItem}>
+            <div>
+              <p>
+                <strong>{cert.name}</strong>, {cert.organization}
+              </p>
+            </div>
+            <div style={styles.dates}>
+              {new Date(cert.issueDate).toLocaleDateString()} -{" "}
+              {cert.expirationDate
+                ? new Date(cert.expirationDate).toLocaleDateString()
+                : "Present"}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Hobbies Section */}
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Hobbies</h2>
+        <ul className="list-disc list-inside">
+          {resumeData.hobbies.map((hobby, index) => (
+            <li key={index}>{hobby}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );
@@ -105,6 +147,11 @@ const styles = {
     fontSize: "32px",
     fontWeight: "bold",
   },
+  title: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    color: "#555",
+  },
   contactInfo: {
     fontSize: "14px",
     margin: "5px 0",
@@ -123,12 +170,17 @@ const styles = {
     marginBottom: "10px",
     borderBottom: "1px solid #ccc",
   },
+  certificationItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "10px",
+  },
   dates: {
-    float: "right",
     fontStyle: "italic",
+    color: "#555",
   },
   link: {
-    float: "right",
     color: "blue",
   },
 };
