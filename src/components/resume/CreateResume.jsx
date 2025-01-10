@@ -6,6 +6,8 @@ import ProfessionalSummaryForm from "./ProfessioalSummaryForm.jsx"
 import EducationalDetailsForm from './EducationalDetailsForm.jsx'
 import ExperienceDetailsForm from './ExperienceDetailsForm.jsx'
 import ProjectsDetailsForm from './ProjectDetailsForm.jsx'
+import CertificationDetailsForm from './CertificationDetailsForm.jsx'
+import HobbiesDetailsForm from './HobbiesDetailsForm'
 export default function CreateResume() {
   const [page,setPage]=useState(0);
   return (
@@ -17,9 +19,9 @@ export default function CreateResume() {
         {page==2 && <EducationalDetailsForm page={page} setPage={setPage}/>}
         {page==3 && <ExperienceDetailsForm page={page} setPage={setPage}/>}
         {page==4 && <ProjectsDetailsForm page={page} setPage={setPage}/>}
-        {page==5 && <ProfessionalSummaryForm page={page} setPage={setPage}/>}
-        {page==6 && <ProfessionalSummaryForm page={page} setPage={setPage}/>}
-        {page==7 && <ProfessionalSummaryForm page={page} setPage={setPage}/>}
+        {page==5 && <CertificationDetailsForm page={page} setPage={setPage}/>}
+        {page==6 && <HobbiesDetailsForm page={page} setPage={setPage}/>}
+        {/* {page==7 && <ProfessionalSummaryForm page={page} setPage={setPage}/>} */}
 
       </div>
       <div className='border border-accent h-full rounded-xl px-4 bg-gray-100 shadow-xl overflow-y-auto max-h-[80vh]'>
