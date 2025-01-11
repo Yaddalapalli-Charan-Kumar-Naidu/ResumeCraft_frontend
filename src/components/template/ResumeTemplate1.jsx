@@ -13,8 +13,7 @@ const ResumeTemplate1 = () => {
         </h1>
         <p style={styles.title}>{resumeData.designation}</p>
         <p style={styles.contactInfo}>
-          {resumeData.email} | {resumeData.phone} |{" "}
-          {resumeData.socialMediaLinks.portfolio}
+          {resumeData.email} | {resumeData.phone}
         </p>
         <p style={styles.links}>
           <a href={resumeData.socialMediaLinks.linkedIn} target="_blank">

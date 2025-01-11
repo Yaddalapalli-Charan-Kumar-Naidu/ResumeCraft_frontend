@@ -1,62 +1,69 @@
 import React, { useContext, useState, useEffect } from "react";
 import ResumeContext from "../context/ResumeContext";
 
-const HobbiesDetailsForm = ({ page, setPage }) => {
+const SkillsDetailsForm = ({ page, setPage }) => {
   const { resumeData, setResumeData } = useContext(ResumeContext);
 
-  // Initialize hobbies state with resumeData.hobbies
-  const [hobbies, setHobbies] = useState([""]);
+  // Initialize skills state with resumeData.skills or a default skill
+  const [skills, setSkills] = useState([""]);
 
   useEffect(() => {
-    // If resumeData.hobbies exists and is not empty, use it to initialize hobbies
-    if (resumeData.hobbies && resumeData.hobbies.length > 0) {
-      setHobbies(resumeData.hobbies);
+    // If resumeData.skills exists and is not empty, use it to initialize skills
+    if (resumeData.skills && resumeData.skills.length > 0) {
+      setSkills(resumeData.skills);
+    } else {
+      // Initialize with one default skill
+      setSkills([""]);
     }
-  }, [resumeData.hobbies]);
+  }, [resumeData.skills]);
 
   const handleChange = (e, index) => {
     const { value } = e.target;
-    const newHobbies = [...hobbies];
-    newHobbies[index] = value;
+    const newSkills = [...skills];
+    newSkills[index] = value;
 
     // Update local state
-    setHobbies(newHobbies);
+    setSkills(newSkills);
 
     // Update global resumeData state
     setResumeData({
       ...resumeData,
-      hobbies: newHobbies, // Update hobbies in real-time
+      skills: newSkills, // Update skills in real-time
     });
   };
 
-  const handleAddHobby = () => {
-    setHobbies([...hobbies, ""]);
+  const handleAddSkill = () => {
+    setSkills([...skills, ""]);
   };
 
-  const handleRemoveHobby = (index) => {
-    const newHobbies = [...hobbies];
-    newHobbies.splice(index, 1);
-    setHobbies(newHobbies);
+  const handleRemoveSkill = (index) => {
+    const newSkills = [...skills];
+    newSkills.splice(index, 1);
+
+    // Update local state
+    setSkills(newSkills);
+
+    // Update global resumeData state
     setResumeData({
       ...resumeData,
-      hobbies:newHobbies
-    })
+      skills: newSkills, // Update skills in real-time
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setResumeData({
       ...resumeData,
-      hobbies: hobbies, // Save hobbies under the "hobbies" key
+      skills: skills, // Save skills under the "skills" key
     });
     setPage((page) => page + 1);
   };
 
   return (
     <div className="flex justify-center items-center h-full w-full mt-8">
-      <div className="w-screen max-w-4xl bg-white rounded-lg shadow-lg p-7">
+      <div className="w-screen max-w-4xl bg-white rounded-lg shadow-lg p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-gray-800">Hobbies</h2>
+          <h2 className="text-xl font-bold text-gray-800">Skills</h2>
           <div>
             <button
               type="button"
@@ -75,39 +82,39 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
             <button
               type="button"
               onClick={() => setPage((prevPage) => prevPage + 1)}
-              disabled={page === 7}
+              disabled={page === 10}
               className={`px-4 py-2 rounded-md shadow mx-2 ${
-                page === 7
+                page === 10
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-purple-600 text-white hover:bg-purple-500"
               }`}
-              aria-disabled={page === 7}
+              aria-disabled={page === 10}
             >
               Next
             </button>
           </div>
         </div>
-        <p className="text-gray-600 mb-7">Provide your hobbies</p>
+        <p className="text-gray-600 mb-6">Provide your skills</p>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="overflow-y-auto max-h-[60vh]">
-            {hobbies.map((hobby, index) => (
-              <div key={index} className="space-y-4 mb-7">
+            {skills.map((skill, index) => (
+              <div key={index} className="space-y-4 mb-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Hobby {index + 1}
+                    Skill {index + 1}
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g., Chess, Reading, Cycling"
+                    placeholder="Enter a skill"
                     className="my-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
-                    value={hobby}
+                    value={skill}
                     onChange={(e) => handleChange(e, index)}
                   />
                 </div>
                 {index > 0 && (
                   <button
                     type="button"
-                    onClick={() => handleRemoveHobby(index)}
+                    onClick={() => handleRemoveSkill(index)}
                     className="mt-2 px-4 py-2 bg-red-600 text-white rounded-md shadow hover:bg-red-700"
                   >
                     Remove
@@ -118,10 +125,10 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
           </div>
           <button
             type="button"
-            onClick={handleAddHobby}
+            onClick={handleAddSkill}
             className="mt-2 px-4 py-2 bg-green-600 text-white rounded-md shadow hover:bg-green-700"
           >
-            Add Another Hobby
+            Add Another Skill
           </button>
           <div className="flex justify-between items-center m-1">
             <button
@@ -137,4 +144,4 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
   );
 };
 
-export default HobbiesDetailsForm;
+export default SkillsDetailsForm;
