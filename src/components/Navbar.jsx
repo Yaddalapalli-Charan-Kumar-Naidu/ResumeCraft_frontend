@@ -1,24 +1,187 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 
+const Navbar = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-export default function Navbar() {
+  // Function to toggle dropdown visibility
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
-  const navbarLinks=["Home","about","login/signup"];
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    // Add event listener for clicks outside the dropdown
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="flex items-center text-center justify-between border-lg mx-5 my-2 shadow-xl hover:shadow-2xl rounded-lg hover:scale-120 ">
-      <div className="flex gap-2 items-center">
-        <img src="logo.webp" alt="ResumeCraft Logo" width="60rem" className="rounded-full hover:scale-[110%] cursor-pointer m-2"></img>
-        <a href="/" className="text-lg">ResumeCraft</a>
+    <nav className="bg-white shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          {/* Logo */}
+          <div className="flex items-center">
+            <Link
+              to="/"
+              className="text-2xl font-bold text-purple-600 flex items-center justify-start"
+            >
+              <img
+                src="logo.webp" // Path to your logo image
+                alt="Logo"
+                className="h-16 rounded-full p-2" // Adjust styling as needed
+              />
+              ResumeBuilder
+            </Link>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="hidden md:flex items-center space-x-8">
+            <Link
+              to="/create-resume"
+              className="text-gray-700 hover:text-purple-600 font-medium"
+            >
+              Create Resume
+            </Link>
+            <Link
+              to="/templates"
+              className="text-gray-700 hover:text-purple-600 font-medium"
+            >
+              Templates
+            </Link>
+            <Link
+              to="/about"
+              className="text-gray-700 hover:text-purple-600 font-medium"
+            >
+              About
+            </Link>
+            <Link
+              to="/contact"
+              className="text-gray-700 hover:text-purple-600 font-medium"
+            >
+              Contact
+            </Link>
+          </div>
+
+          {/* User Profile Section */}
+          <div className="flex items-center" ref={dropdownRef}>
+            <div className="relative">
+              <button
+                onClick={toggleDropdown}
+                className="flex items-center focus:outline-none"
+              >
+                <img
+                  src="https://via.placeholder.com/40" // Replace with user profile image
+                  alt="User Profile"
+                  className="rounded-full h-10 w-10"
+                />
+                <span className="ml-2 text-gray-700 font-medium">John Doe</span>
+                <svg
+                  className="ml-2 h-5 w-5 text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/settings"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Settings
+                  </Link>
+                  <Link
+                    to="/logout"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Logout
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex items-center md:hidden">
+            <button className="text-gray-500 hover:text-purple-600 focus:outline-none">
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
-      <div style={{height:"100%"}}>
-        <ul className="flex items-center space-x-4">
-          {navbarLinks.map((item,index)=>(
-            <li key={index} className="p-2 text-center">
-              <a href={`/${item.toLowerCase().split("/")[0]}`} className="hover:text-blue-500">{item}</a>
-              </li>
-          ))}
-        </ul>
+
+      {/* Mobile Menu */}
+      <div className="md:hidden">
+        <div className="px-2 pt-2 pb-3 space-y-1">
+          <Link
+            to="/create-resume"
+            className="block text-gray-700 hover:text-purple-600 font-medium"
+          >
+            Create Resume
+          </Link>
+          <Link
+            to="/templates"
+            className="block text-gray-700 hover:text-purple-600 font-medium"
+          >
+            Templates
+          </Link>
+          <Link
+            to="/about"
+            className="block text-gray-700 hover:text-purple-600 font-medium"
+          >
+            About
+          </Link>
+          <Link
+            to="/contact"
+            className="block text-gray-700 hover:text-purple-600 font-medium"
+          >
+            Contact
+          </Link>
+        </div>
       </div>
-    </div>
+    </nav>
   );
-}
+};
+
+export default Navbar;
