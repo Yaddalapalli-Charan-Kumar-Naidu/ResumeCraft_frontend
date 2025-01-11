@@ -54,9 +54,20 @@ const ProjectsDetailsForm = ({ page, setPage }) => {
   };
 
   const handleRemoveProject = (index) => {
+    // Create a copy of the current projects array
     const newProjects = [...projects];
+  
+    // Remove the project at the specified index
     newProjects.splice(index, 1);
+  
+    // Update the local state
     setProjects(newProjects);
+  
+    // Update the global resumeData state
+    setResumeData({
+      ...resumeData,
+      projects: newProjects, // Update projects in real-time
+    });
   };
 
   const handleSubmit = (e) => {

@@ -41,7 +41,15 @@ const ExperienceDetailsForm = ({ page, setPage }) => {
   const handleRemoveExperience = (index) => {
     const newExperiences = [...experiences];
     newExperiences.splice(index, 1);
+  
+    // Update local state
     setExperiences(newExperiences);
+  
+    // Update global resumeData state
+    setResumeData({
+      ...resumeData,
+      experience: newExperiences, // Update experience in real-time
+    });
   };
 
   const handleSubmit = (e) => {

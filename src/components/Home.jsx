@@ -1,5 +1,5 @@
 import React from "react";
-
+import {Link} from 'react-router-dom';
 export default function Home() {
   return (
     <div className="w-screen border bg-gray-100">
@@ -27,9 +27,11 @@ export default function Home() {
             future today—your dream job is just a resume away!
           </div>
           <div className="flex flex-col md:flex-row justify-around">
+            <Link to='/create-resume'>
           <button className="border rounded-xl text-white px-8 py-2 my-3 bg-primary hover:scale-105 hover:bg-secondary-400 w-full md:w-auto">
               Create New Resume
             </button>
+            </Link>
             <button className="border rounded-xl px-8 py-2 my-3 border border-primary hover:scale-110 hover:bg-white w-full md:w-auto">
               Improve Resume
             </button>
@@ -65,7 +67,7 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 bg-gray-200 rounded-lg shadow-lg">
         <div>
           <img
-            src="login.webp"
+            src="resume.png"
             alt="Resume Example"
             className="w-full h-auto" 
           />

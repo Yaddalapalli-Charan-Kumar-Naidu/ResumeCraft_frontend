@@ -37,6 +37,10 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
     const newHobbies = [...hobbies];
     newHobbies.splice(index, 1);
     setHobbies(newHobbies);
+    setResumeData({
+      ...resumeData,
+      hobbies:newHobbies
+    })
   };
 
   const handleSubmit = (e) => {

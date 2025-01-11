@@ -24,8 +24,8 @@ export default function CreateResume() {
         {/* {page==7 && <ProfessionalSummaryForm page={page} setPage={setPage}/>} */}
 
       </div>
-      <div className='border border-accent h-full rounded-xl px-4 bg-gray-100 shadow-xl overflow-y-auto max-h-[80vh]'>
-        resume preview
+      <div className='border h-full rounded-xl px-4 bg-gray-100 shadow-xl overflow-y-auto max-h-[80vh]'>
+      <h2 className="text-xl font-bold mb-4">Resume Preview</h2>
         <ResumeTemplate1/>
       </div>
     </div>

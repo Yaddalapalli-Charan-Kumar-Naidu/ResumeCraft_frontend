@@ -39,9 +39,20 @@ const CertificationDetailsForm = ({ page, setPage }) => {
   };
 
   const handleRemoveCertification = (index) => {
+    // Create a copy of the current certifications array
     const newCertifications = [...certifications];
+  
+    // Remove the certification at the specified index
     newCertifications.splice(index, 1);
+  
+    // Update the local state
     setCertifications(newCertifications);
+  
+    // Update the global resumeData state
+    setResumeData({
+      ...resumeData,
+      certifications: newCertifications, // Update certifications in real-time
+    });
   };
 
   const handleSubmit = (e) => {

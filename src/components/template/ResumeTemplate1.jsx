@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import ResumeContext from "../context/ResumeContext";
 
 const ResumeTemplate1 = () => {
-  const { resumeData } = useContext(ResumeContext); // Destructure data directly from context
+  const { resumeData } = useContext(ResumeContext);
 
   return (
     <div className="resume-container mb-2 text-sm" style={styles.container}>
@@ -11,7 +11,7 @@ const ResumeTemplate1 = () => {
         <h1 style={styles.name}>
           {resumeData.firstName} {resumeData.lastName}
         </h1>
-        <p style={styles.title}>{resumeData.title}</p>
+        <p style={styles.title}>{resumeData.designation}</p>
         <p style={styles.contactInfo}>
           {resumeData.email} | {resumeData.phone} |{" "}
           {resumeData.socialMediaLinks.portfolio}
@@ -47,12 +47,14 @@ const ResumeTemplate1 = () => {
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Education</h2>
         {resumeData.education.map((edu, index) => (
-          <div key={index}>
-            <p>
-              <strong>{edu.degree}</strong>, {edu.institution}
-              <span style={styles.dates}>{edu.year}</span>
-            </p>
-            {edu.cgpa && <p>CGPA: {edu.cgpa}</p>}
+          <div key={index} style={styles.educationItem}>
+            <div>
+              <p>
+                <strong>{edu.degree}</strong>, {edu.institution}
+              </p>
+              {edu.cgpa && <p>CGPA: {edu.cgpa}</p>}
+            </div>
+            <p style={styles.dates}>{edu.year}</p>
           </div>
         ))}
       </div>
@@ -61,12 +63,14 @@ const ResumeTemplate1 = () => {
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Experience</h2>
         {resumeData.experience.map((exp, index) => (
-          <div key={index}>
-            <p>
-              <strong>{exp.jobTitle}</strong>, {exp.company}
-              <span style={styles.dates}>{exp.duration}</span>
-            </p>
-            <p>{exp.description}</p>
+          <div key={index} style={styles.experienceItem}>
+            <div>
+              <p>
+                <strong>{exp.jobTitle}</strong>, {exp.company}
+              </p>
+              <p>{exp.description}</p>
+            </div>
+            <p style={styles.dates}>{exp.duration}</p>
           </div>
         ))}
       </div>
@@ -170,6 +174,18 @@ const styles = {
     marginBottom: "10px",
     borderBottom: "1px solid #ccc",
   },
+  educationItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "10px",
+  },
+  experienceItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "10px",
+  },
   certificationItem: {
     display: "flex",
     justifyContent: "space-between",
@@ -179,6 +195,8 @@ const styles = {
   dates: {
     fontStyle: "italic",
     color: "#555",
+    textAlign: "right",
+    minWidth: "120px", // Ensure consistent width for alignment
   },
   link: {
     color: "blue",
