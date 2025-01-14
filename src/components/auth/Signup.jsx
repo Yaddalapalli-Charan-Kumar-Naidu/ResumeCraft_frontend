@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import { Container } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-
+import axios from "axios";
 export default function SignUp() {
   const [formData, setFormData] = useState({
     name: "",
@@ -44,7 +44,8 @@ export default function SignUp() {
     if (!formData.name) newErrors.name = "Name is required";
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.password) newErrors.password = "Password is required";
-    if (!formData.phoneNumber) newErrors.phoneNumber = "Phone number is required";
+    if (!formData.phoneNumber)
+      newErrors.phoneNumber = "Phone number is required";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -53,8 +54,27 @@ export default function SignUp() {
     }
 
     // Simulate form submission (no backend connection)
-    console.log("Form Data:", formData);
-    alert("Signup successful! (This is a frontend-only demo.)");
+    const data = formData;
+    // console.log("Form Data:", formData);
+    const BASEURL=import.meta.env.VITE_BASEURL;
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${BASEURL}/auth/signup`,
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        alert("Signup successful! ");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    
     setIsSubmitting(false);
   };
 
