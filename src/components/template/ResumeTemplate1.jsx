@@ -1,152 +1,172 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import ResumeContext from "../context/ResumeContext";
+import html2pdf from "html2pdf.js";
 
 const ResumeTemplate1 = () => {
   const { resumeData } = useContext(ResumeContext);
+  const resumeRef = useRef(null);
+
+  const handleGeneratePdf = () => {
+    const element = resumeRef.current;
+    const opt = {
+      margin: 10,
+      filename: `${resumeData.firstName}_${resumeData.lastName}_Resume.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    };
+
+    html2pdf().from(element).set(opt).save();
+  };
 
   return (
-    <div className="resume-container" style={styles.container}>
-      {/* Header Section */}
-      <div style={styles.header}>
-        <h1 style={styles.name}>
-          {resumeData.firstName} {resumeData.lastName}
-        </h1>
-        <p style={styles.title}>{resumeData.designation}</p>
-        <div style={styles.contactInfo}>
-          <p>
-            {resumeData.email} | {resumeData.phone}
-          </p>
-          <p>
-            <a
-              href={resumeData.socialMediaLinks.linkedIn}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={styles.link}
-            >
-              LinkedIn
-            </a>{" "}
-            |{" "}
-            <a
-              href={resumeData.socialMediaLinks.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={styles.link}
-            >
-              GitHub
-            </a>
-          </p>
-        </div>
-      </div>
-
-      {/* Professional Summary Section */}
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Professional Summary</h2>
-        <p style={styles.summaryText}>{resumeData.professionalSummary}</p>
-      </div>
-
-      {/* Skills Section */}
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Skills</h2>
-        <div style={styles.skillsContainer}>
-          {resumeData.skills.map((skill, index) => (
-            <span key={index} style={styles.skill}>
-              {skill}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Education Section */}
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Education</h2>
-        {resumeData.education.map((edu, index) => (
-          <div key={index} style={styles.educationItem}>
-            <div>
-              <p style={styles.educationDegree}>
-                <strong>{edu.degree}</strong>, {edu.institution}
-              </p>
-              {edu.cgpa && <p>CGPA: {edu.cgpa}</p>}
-            </div>
-            <p style={styles.dates}>{edu.year}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Experience Section */}
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Experience</h2>
-        {resumeData.experience.map((exp, index) => (
-          <div key={index} style={styles.experienceItem}>
-            <div>
-              <p style={styles.experienceTitle}>
-                <strong>{exp.jobTitle}</strong>, {exp.company}
-              </p>
-              <p style={styles.experienceDescription}>{exp.description}</p>
-            </div>
-            <p style={styles.dates}>{exp.duration}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Projects Section */}
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Projects</h2>
-        {resumeData.projects.map((project, index) => (
-          <div key={index} style={styles.projectItem}>
-            <p style={styles.projectTitle}>
-              <strong>{project.title}</strong>
-              {project.link && (
-                <span style={styles.link}>
-                  {" "}
-                  |{" "}
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={styles.link}
-                  >
-                    Link
-                  </a>
-                </span>
-              )}
+    <div>
+      <button onClick={handleGeneratePdf} style={styles.generatePdfButton}>
+        Generate PDF
+      </button>
+      <div ref={resumeRef} className="resume-container" style={styles.container}>
+        {/* Header Section */}
+        <div style={styles.header}>
+          <h1 style={styles.name}>
+            {resumeData.firstName} {resumeData.lastName}
+          </h1>
+          <p style={styles.title}>{resumeData.designation}</p>
+          <div style={styles.contactInfo}>
+            <p>
+              {resumeData.email} | {resumeData.phone}
             </p>
-            <p style={styles.projectDescription}>{project.description}</p>
-            <p style={styles.projectTechnologies}>
-              <strong>Technologies:</strong> {project.technologies.join(", ")}
+            <p>
+              <a
+                href={resumeData.socialMediaLinks.linkedIn}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={styles.link}
+              >
+                LinkedIn
+              </a>{" "}
+              |{" "}
+              <a
+                href={resumeData.socialMediaLinks.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={styles.link}
+              >
+                GitHub
+              </a>
             </p>
           </div>
-        ))}
-      </div>
+        </div>
 
-      {/* Certifications Section */}
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Certifications</h2>
-        {resumeData.certifications.map((cert, index) => (
-          <div key={index} style={styles.certificationItem}>
-            <div>
-              <p style={styles.certificationName}>
-                <strong>{cert.name}</strong>, {cert.organization}
+        {/* Professional Summary Section */}
+        <div style={styles.section}>
+          <h2 style={styles.sectionTitle}>Professional Summary</h2>
+          <p style={styles.summaryText}>{resumeData.professionalSummary}</p>
+        </div>
+
+        {/* Skills Section */}
+        <div style={styles.section}>
+          <h2 style={styles.sectionTitle}>Skills</h2>
+          <div style={styles.skillsContainer}>
+            {resumeData.skills.map((skill, index) => (
+              <span key={index} style={styles.skill}>
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Education Section */}
+        <div style={styles.section}>
+          <h2 style={styles.sectionTitle}>Education</h2>
+          {resumeData.education.map((edu, index) => (
+            <div key={index} style={styles.educationItem}>
+              <div>
+                <p style={styles.educationDegree}>
+                  <strong>{edu.degree}</strong>, {edu.institution}
+                </p>
+                {edu.cgpa && <p>CGPA: {edu.cgpa}</p>}
+              </div>
+              <p style={styles.dates}>{edu.year}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Experience Section */}
+        <div style={styles.section}>
+          <h2 style={styles.sectionTitle}>Experience</h2>
+          {resumeData.experience.map((exp, index) => (
+            <div key={index} style={styles.experienceItem}>
+              <div>
+                <p style={styles.experienceTitle}>
+                  <strong>{exp.jobTitle}</strong>, {exp.company}
+                </p>
+                <p style={styles.experienceDescription}>{exp.description}</p>
+              </div>
+              <p style={styles.dates}>{exp.duration}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Projects Section */}
+        <div style={styles.section}>
+          <h2 style={styles.sectionTitle}>Projects</h2>
+          {resumeData.projects.map((project, index) => (
+            <div key={index} style={styles.projectItem}>
+              <p style={styles.projectTitle}>
+                <strong>{project.title}</strong>
+                {project.link && (
+                  <span style={styles.link}>
+                    {" "}
+                    |{" "}
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={styles.link}
+                    >
+                      Link
+                    </a>
+                  </span>
+                )}
+              </p>
+              <p style={styles.projectDescription}>{project.description}</p>
+              <p style={styles.projectTechnologies}>
+                <strong>Technologies:</strong> {project.technologies.join(", ")}
               </p>
             </div>
-            <div style={styles.dates}>
-              {new Date(cert.issueDate).toLocaleDateString()} -{" "}
-              {cert.expirationDate
-                ? new Date(cert.expirationDate).toLocaleDateString()
-                : "Present"}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Hobbies Section */}
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Hobbies</h2>
-        <div style={styles.hobbiesContainer}>
-          {resumeData.hobbies.map((hobby, index) => (
-            <span key={index} style={styles.hobby}>
-              {hobby}
-            </span>
           ))}
+        </div>
+
+        {/* Certifications Section */}
+        <div style={styles.section}>
+          <h2 style={styles.sectionTitle}>Certifications</h2>
+          {resumeData.certifications.map((cert, index) => (
+            <div key={index} style={styles.certificationItem}>
+              <div>
+                <p style={styles.certificationName}>
+                  <strong>{cert.name}</strong>, {cert.organization}
+                </p>
+              </div>
+              <div style={styles.dates}>
+                {new Date(cert.issueDate).toLocaleDateString()} -{" "}
+                {cert.expirationDate
+                  ? new Date(cert.expirationDate).toLocaleDateString()
+                  : "Present"}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Hobbies Section */}
+        <div style={styles.section}>
+          <h2 style={styles.sectionTitle}>Hobbies</h2>
+          <div style={styles.hobbiesContainer}>
+            {resumeData.hobbies.map((hobby, index) => (
+              <span key={index} style={styles.hobby}>
+                {hobby}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -282,6 +302,16 @@ const styles = {
     borderRadius: "5px",
     fontSize: "14px",
     color: "#555",
+  },
+  generatePdfButton: {
+    margin: "20px",
+    padding: "10px 20px",
+    backgroundColor: "#3498db",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "16px",
   },
 };
 
