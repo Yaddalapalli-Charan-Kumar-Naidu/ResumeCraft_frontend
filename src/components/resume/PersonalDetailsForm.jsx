@@ -53,7 +53,7 @@ const PersonalDetailForm = ({ page, setPage }) => {
 
             <button
       type="button"
-      onClick={() => setPage((prevPage) => prevPage + 1)}
+      onClick={handleSubmit}
       disabled={page === 10}
       className={`px-4 py-2 rounded-md shadow mx-2 ${
         page === 10
@@ -168,14 +168,14 @@ const PersonalDetailForm = ({ page, setPage }) => {
             </div>
           </div>
 
-          <div className="flex justify-between items-center">
+          {/* <div className="flex justify-between items-center">
             <button
               type="submit"
               className="px-4 py-2 bg-purple-600 text-white rounded-md shadow hover:bg-purple-700"
             >
               Save
             </button>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

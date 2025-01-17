@@ -1,18 +1,19 @@
 import React, { useContext, useState, useEffect } from "react";
 import ResumeContext from "../context/ResumeContext";
+import axios from "axios";
 
 const HobbiesDetailsForm = ({ page, setPage }) => {
   const { resumeData, setResumeData } = useContext(ResumeContext);
-
-  // Initialize hobbies state with resumeData.hobbies
   const [hobbies, setHobbies] = useState([""]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // If resumeData.hobbies exists and is not empty, use it to initialize hobbies
     if (resumeData.hobbies && resumeData.hobbies.length > 0) {
       setHobbies(resumeData.hobbies);
+    } else {
+      setHobbies([""]); // Initialize with one empty field if hobbies is empty
     }
-  }, [resumeData.hobbies]);
+  }, [resumeData]);
 
   const handleChange = (e, index) => {
     const { value } = e.target;
@@ -25,7 +26,7 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
     // Update global resumeData state
     setResumeData({
       ...resumeData,
-      hobbies: newHobbies, // Update hobbies in real-time
+      hobbies: newHobbies,
     });
   };
 
@@ -39,17 +40,44 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
     setHobbies(newHobbies);
     setResumeData({
       ...resumeData,
-      hobbies:newHobbies
-    })
+      hobbies: newHobbies,
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setResumeData({
-      ...resumeData,
-      hobbies: hobbies, // Save hobbies under the "hobbies" key
-    });
-    setPage((page) => page + 1);
+    setIsLoading(true);
+
+    // Validate that at least one hobby is filled
+    const isHobbiesValid = hobbies.some((hobby) => hobby.trim() !== "");
+    if (!isHobbiesValid) {
+      alert("Please enter at least one hobby.");
+      setIsLoading(false);
+      return;
+    }
+
+    // Update resumeData with the latest hobbies
+    const updatedResumeData = { ...resumeData, hobbies };
+
+    try {
+      const config = {
+        method: "post",
+        url: "http://localhost:8267/resume/",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+        data: updatedResumeData,
+      };
+
+      const response = await axios.request(config);
+      console.log("Resume saved:", response.data);
+
+    } catch (error) {
+      console.error("Error saving resume:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -108,7 +136,12 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
                   <button
                     type="button"
                     onClick={() => handleRemoveHobby(index)}
-                    className="mt-2 px-4 py-2 bg-red-600 text-white rounded-md shadow hover:bg-red-700"
+                    disabled={hobbies.length === 1}
+                    className={`mt-2 px-4 py-2 ${
+                      hobbies.length === 1
+                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        : "bg-red-600 text-white hover:bg-red-700"
+                    } rounded-md shadow`}
                   >
                     Remove
                   </button>
@@ -126,9 +159,14 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
           <div className="flex justify-between items-center m-1">
             <button
               type="submit"
-              className="px-4 py-2 bg-purple-600 text-white rounded-md shadow hover:bg-purple-700 mt-2"
+              disabled={isLoading}
+              className={`px-4 py-2 ${
+                isLoading
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-purple-600 text-white hover:bg-purple-700"
+              } rounded-md shadow mt-2`}
             >
-              Save
+              {isLoading ? "Saving..." : "Save"}
             </button>
           </div>
         </form>

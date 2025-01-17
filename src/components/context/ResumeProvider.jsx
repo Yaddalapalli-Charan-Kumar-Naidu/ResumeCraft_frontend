@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import ResumeContext from "./ResumeContext";
-import data from "./Data.jsx"; // Corrected import for default export
+import data from "./Data.jsx"; 
 
 function ResumeProvider({ children }) {
-  const [resumeData, setResumeData] = useState(data); // Renamed variable to avoid conflict with imported 'data'
+  const [resumeData, setResumeData] = useState(data); 
 
   return (
     <ResumeContext.Provider value={{ resumeData ,setResumeData}}>
