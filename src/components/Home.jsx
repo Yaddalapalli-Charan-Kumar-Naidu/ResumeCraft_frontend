@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="w-screen bg-gray-100">
       {/* Hero Section */}
-      <div className="flex flex-col md:flex-row-reverse justify-center items-center w-full h-full px-4">
+      <div className="flex flex-col md:flex-row-reverse justify-center items-center w-full h-[85vh] px-4 mt-7">
         <div className="w-full md:w-[50vw]">
           <img
             src="hero2.avif"
@@ -47,7 +47,7 @@ export default function Home() {
       </div>
 
       {/* Steps Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-center m-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-center m-2 h-[85vh] items-center">
         <div>
           <img
             src="step1.png"
@@ -86,12 +86,12 @@ export default function Home() {
       </div>
 
       {/* Resume Example Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 bg-gray-200 rounded-lg shadow-lg">
+      <div className="grid grid-cols-1 md:grid-cols-2 bg-gray-200 rounded-lg shadow-lg h-[85vh]">
         <div>
           <img
             src="resume.png"
             alt="Example of a professional resume"
-            className="w-full h-auto"
+            className="w-full h-[85vh]"
           />
         </div>
         <div className="text-center p-8 flex flex-col justify-center">

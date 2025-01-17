@@ -4,7 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -13,7 +13,9 @@ import { Container } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import axios from "axios";
+
 export default function SignUp() {
+  const navigate=useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -69,6 +71,7 @@ export default function SignUp() {
       .then((response) => {
         console.log(JSON.stringify(response.data));
         alert("Signup successful! ");
+        navigate("/verify-otp",{state:{email:formData.email}});
       })
       .catch((error) => {
         console.log(error);

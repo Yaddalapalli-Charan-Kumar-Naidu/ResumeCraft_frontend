@@ -5,41 +5,55 @@ const ResumeTemplate1 = () => {
   const { resumeData } = useContext(ResumeContext);
 
   return (
-    <div className="resume-container mb-2 text-sm" style={styles.container}>
+    <div className="resume-container" style={styles.container}>
       {/* Header Section */}
       <div style={styles.header}>
         <h1 style={styles.name}>
           {resumeData.firstName} {resumeData.lastName}
         </h1>
         <p style={styles.title}>{resumeData.designation}</p>
-        <p style={styles.contactInfo}>
-          {resumeData.email} | {resumeData.phone}
-        </p>
-        <p style={styles.links}>
-          <a href={resumeData.socialMediaLinks.linkedIn} target="_blank">
-            {resumeData.socialMediaLinks.linkedIn}{" "}
-          </a>
-          |{" "}
-          <a href={resumeData.socialMediaLinks.github} target="_blank">
-            {resumeData.socialMediaLinks.github}
-          </a>
-        </p>
+        <div style={styles.contactInfo}>
+          <p>
+            {resumeData.email} | {resumeData.phone}
+          </p>
+          <p>
+            <a
+              href={resumeData.socialMediaLinks.linkedIn}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={styles.link}
+            >
+              LinkedIn
+            </a>{" "}
+            |{" "}
+            <a
+              href={resumeData.socialMediaLinks.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={styles.link}
+            >
+              GitHub
+            </a>
+          </p>
+        </div>
       </div>
 
       {/* Professional Summary Section */}
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Professional Summary</h2>
-        <p>{resumeData.professionalSummary}</p>
+        <p style={styles.summaryText}>{resumeData.professionalSummary}</p>
       </div>
 
       {/* Skills Section */}
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Skills</h2>
-        <ul className="list-disc list-inside">
+        <div style={styles.skillsContainer}>
           {resumeData.skills.map((skill, index) => (
-            <li key={index}>{skill}</li>
+            <span key={index} style={styles.skill}>
+              {skill}
+            </span>
           ))}
-        </ul>
+        </div>
       </div>
 
       {/* Education Section */}
@@ -48,7 +62,7 @@ const ResumeTemplate1 = () => {
         {resumeData.education.map((edu, index) => (
           <div key={index} style={styles.educationItem}>
             <div>
-              <p>
+              <p style={styles.educationDegree}>
                 <strong>{edu.degree}</strong>, {edu.institution}
               </p>
               {edu.cgpa && <p>CGPA: {edu.cgpa}</p>}
@@ -64,10 +78,10 @@ const ResumeTemplate1 = () => {
         {resumeData.experience.map((exp, index) => (
           <div key={index} style={styles.experienceItem}>
             <div>
-              <p>
+              <p style={styles.experienceTitle}>
                 <strong>{exp.jobTitle}</strong>, {exp.company}
               </p>
-              <p>{exp.description}</p>
+              <p style={styles.experienceDescription}>{exp.description}</p>
             </div>
             <p style={styles.dates}>{exp.duration}</p>
           </div>
@@ -78,8 +92,8 @@ const ResumeTemplate1 = () => {
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Projects</h2>
         {resumeData.projects.map((project, index) => (
-          <div key={index}>
-            <p>
+          <div key={index} style={styles.projectItem}>
+            <p style={styles.projectTitle}>
               <strong>{project.title}</strong>
               {project.link && (
                 <span style={styles.link}>
@@ -89,14 +103,17 @@ const ResumeTemplate1 = () => {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
+                    style={styles.link}
                   >
                     Link
                   </a>
                 </span>
               )}
             </p>
-            <p>{project.description}</p>
-            <p>Technologies: {project.technologies.join(", ")}</p>
+            <p style={styles.projectDescription}>{project.description}</p>
+            <p style={styles.projectTechnologies}>
+              <strong>Technologies:</strong> {project.technologies.join(", ")}
+            </p>
           </div>
         ))}
       </div>
@@ -107,7 +124,7 @@ const ResumeTemplate1 = () => {
         {resumeData.certifications.map((cert, index) => (
           <div key={index} style={styles.certificationItem}>
             <div>
-              <p>
+              <p style={styles.certificationName}>
                 <strong>{cert.name}</strong>, {cert.organization}
               </p>
             </div>
@@ -124,11 +141,13 @@ const ResumeTemplate1 = () => {
       {/* Hobbies Section */}
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Hobbies</h2>
-        <ul className="list-disc list-inside">
+        <div style={styles.hobbiesContainer}>
           {resumeData.hobbies.map((hobby, index) => (
-            <li key={index}>{hobby}</li>
+            <span key={index} style={styles.hobby}>
+              {hobby}
+            </span>
           ))}
-        </ul>
+        </div>
       </div>
     </div>
   );
@@ -136,33 +155,40 @@ const ResumeTemplate1 = () => {
 
 const styles = {
   container: {
-    fontFamily: "Arial, sans-serif",
+    fontFamily: "'Arial', sans-serif",
     lineHeight: 1.6,
     margin: "0 auto",
     maxWidth: "800px",
     padding: "20px",
+    backgroundColor: "#ffffff",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    borderRadius: "8px",
   },
   header: {
     textAlign: "center",
     marginBottom: "20px",
+    paddingBottom: "20px",
+    borderBottom: "2px solid #e0e0e0",
   },
   name: {
     fontSize: "32px",
     fontWeight: "bold",
+    color: "#2c3e50",
   },
   title: {
     fontSize: "18px",
     fontWeight: "bold",
     color: "#555",
+    margin: "5px 0",
   },
   contactInfo: {
     fontSize: "14px",
+    color: "#555",
     margin: "5px 0",
   },
-  links: {
-    fontSize: "14px",
-    margin: "5px 0",
-    color: "blue",
+  link: {
+    color: "#3498db",
+    textDecoration: "none",
   },
   section: {
     marginBottom: "20px",
@@ -170,8 +196,26 @@ const styles = {
   sectionTitle: {
     fontSize: "20px",
     fontWeight: "bold",
+    color: "#2c3e50",
     marginBottom: "10px",
-    borderBottom: "1px solid #ccc",
+    paddingBottom: "5px",
+    borderBottom: "1px solid #e0e0e0",
+  },
+  summaryText: {
+    fontSize: "14px",
+    color: "#555",
+  },
+  skillsContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "10px",
+  },
+  skill: {
+    backgroundColor: "#f1f1f1",
+    padding: "5px 10px",
+    borderRadius: "5px",
+    fontSize: "14px",
+    color: "#555",
   },
   educationItem: {
     display: "flex",
@@ -179,11 +223,38 @@ const styles = {
     alignItems: "center",
     marginBottom: "10px",
   },
+  educationDegree: {
+    fontSize: "14px",
+    color: "#555",
+  },
   experienceItem: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: "10px",
+  },
+  experienceTitle: {
+    fontSize: "14px",
+    color: "#555",
+  },
+  experienceDescription: {
+    fontSize: "14px",
+    color: "#777",
+  },
+  projectItem: {
+    marginBottom: "10px",
+  },
+  projectTitle: {
+    fontSize: "14px",
+    color: "#555",
+  },
+  projectDescription: {
+    fontSize: "14px",
+    color: "#777",
+  },
+  projectTechnologies: {
+    fontSize: "14px",
+    color: "#777",
   },
   certificationItem: {
     display: "flex",
@@ -191,14 +262,26 @@ const styles = {
     alignItems: "center",
     marginBottom: "10px",
   },
-  dates: {
-    fontStyle: "italic",
+  certificationName: {
+    fontSize: "14px",
     color: "#555",
-    textAlign: "right",
-    minWidth: "120px", // Ensure consistent width for alignment
   },
-  link: {
-    color: "blue",
+  dates: {
+    fontSize: "14px",
+    color: "#777",
+    fontStyle: "italic",
+  },
+  hobbiesContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "10px",
+  },
+  hobby: {
+    backgroundColor: "#f1f1f1",
+    padding: "5px 10px",
+    borderRadius: "5px",
+    fontSize: "14px",
+    color: "#555",
   },
 };
 

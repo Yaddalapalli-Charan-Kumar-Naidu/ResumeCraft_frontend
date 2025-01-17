@@ -13,7 +13,7 @@ export default function CreateResume() {
   const [page, setPage] = useState(0);
   return (
     <ResumeProvider>
-      <div className="grid grid-cols-1 md:grid-cols-2 h-[85vh] gap-10 p-10 mb-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 h-[85vh] gap-10 p-10 my-5 items-center">
         <div className="h-[85vh]">
           {page == 0 && <PersonalDetailsForm page={page} setPage={setPage} />}
           {page == 1 && (
@@ -34,7 +34,7 @@ export default function CreateResume() {
           {page == 7 && <HobbiesDetailsForm page={page} setPage={setPage} />}
           {/* {page==7 && <ProfessionalSummaryForm page={page} setPage={setPage}/>} */}
         </div>
-        <div className="border border-t-primary border-t-4 h-full rounded-xl px-4 bg-gray-100 shadow-xl overflow-y-auto max-h-[80vh]">
+        <div className="border border-t-primary border-t-4 h-full rounded-xl px-4 bg-gray-100 shadow-xl overflow-y-auto max-h-[85vh] mt-5">
           <h2 className="text-xl font-bold mb-4">Resume Preview</h2>
           <ResumeTemplate1 />
         </div>
