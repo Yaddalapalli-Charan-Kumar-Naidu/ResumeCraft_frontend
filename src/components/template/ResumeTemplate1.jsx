@@ -9,9 +9,8 @@ const ResumeTemplate1 = () => {
   const handleGeneratePdf = () => {
     const element = resumeRef.current;
     const opt = {
-      margin: 10,
       filename: `${resumeData.firstName}_${resumeData.lastName}_Resume.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
+      image: { type: "text", quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     };
@@ -177,7 +176,7 @@ const styles = {
   container: {
     fontFamily: "'Arial', sans-serif",
     lineHeight: 1.6,
-    margin: "0 auto",
+    // margin: "0 auto",
     maxWidth: "800px",
     padding: "20px",
     backgroundColor: "#ffffff",
@@ -186,8 +185,8 @@ const styles = {
   },
   header: {
     textAlign: "center",
-    marginBottom: "20px",
-    paddingBottom: "20px",
+    marginBottom: "10px",
+    paddingBottom: "10px",
     borderBottom: "2px solid #e0e0e0",
   },
   name: {

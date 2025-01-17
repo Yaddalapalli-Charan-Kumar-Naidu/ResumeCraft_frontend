@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // For user profile dropdown
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // For mobile menu
   const dropdownRef = useRef(null);
-
+  const navigate=useNavigate();
   // Function to toggle dropdown visibility
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -15,6 +15,10 @@ const Navbar = () => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+  const handleLogout=()=>{
+    localStorage.removeItem("token");
+    navigate("/");
+  }
 
   // Close dropdown and mobile menu when clicking outside
   useEffect(() => {
@@ -37,7 +41,7 @@ const Navbar = () => {
   }, [isMobileMenuOpen]);
 
   return (
-    <nav className="bg-white shadow-lg fixed top-0 left-0 w-screen">
+    <nav className="bg-white shadow-lg fixed top-0 left-0 w-screen min-h-[10vh] mb-3 z-[2]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo and Text */}
@@ -80,7 +84,9 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* User Profile Section */}
+          {/* User Profile Section */}{
+            localStorage.getItem("token")?
+          
           <div className="hidden md:flex items-center" ref={dropdownRef}>
             <div className="relative">
               <button
@@ -92,8 +98,8 @@ const Navbar = () => {
                   alt="User Profile"
                   className="rounded-full h-10 w-10"
                 />
-                <span className="ml-2 text-gray-700 font-medium">John Doe</span>
-                <svg
+                {/* <span className="ml-2 text-gray-700 font-medium">John Doe</span> */}
+                {/* <svg
                   className="ml-2 h-5 w-5 text-gray-500"
                   fill="none"
                   stroke="currentColor"
@@ -106,7 +112,7 @@ const Navbar = () => {
                     strokeWidth="2"
                     d="M19 9l-7 7-7-7"
                   />
-                </svg>
+                </svg> */}
               </button>
 
               {/* Dropdown Menu */}
@@ -114,26 +120,22 @@ const Navbar = () => {
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
                   <Link
                     to="/profile"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    className="block w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
                   >
                     Profile
                   </Link>
-                  <Link
-                    to="/settings"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  >
-                    Settings
-                  </Link>
-                  <Link
-                    to="/logout"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  
+                  <button
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={handleLogout}
                   >
                     Logout
-                  </Link>
+                  </button>
                 </div>
               )}
             </div>
           </div>
+          : <div className="flex items-center"><Link to='/login'>Login/Signup</Link></div>}
 
           {/* Mobile Menu Button */}
           <div className="flex items-center md:hidden">

@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="w-screen bg-gray-100">
       {/* Hero Section */}
-      <div className="flex flex-col md:flex-row-reverse justify-center items-center w-full h-[85vh] px-4 mt-7">
+      <div className="flex flex-col md:flex-row-reverse justify-center items-center w-full min-h-[90vh] px-4 mt-7">
         <div className="w-full md:w-[50vw]">
           <img
             src="hero2.avif"
@@ -27,7 +27,7 @@ export default function Home() {
             personality on a resume that gets noticed. Build your professional
             future today—your dream job is just a resume away!
           </div>
-          <div className="flex flex-col md:flex-row justify-around">
+          <div className="flex flex-col md:flex-row justify-around mt-8">
             <Link to="/create-resume">
               <button
                 aria-label="Create New Resume"
@@ -47,7 +47,7 @@ export default function Home() {
       </div>
 
       {/* Steps Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-center m-2 h-[85vh] items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-center m-2 min-h-[90vh] items-center">
         <div>
           <img
             src="step1.png"
@@ -86,15 +86,15 @@ export default function Home() {
       </div>
 
       {/* Resume Example Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 bg-gray-200 rounded-lg shadow-lg h-[85vh]">
+      <div className="grid grid-cols-1 md:grid-cols-2 bg-gray-200 rounded-lg shadow-lg h-[90vh]">
         <div>
           <img
             src="resume.png"
             alt="Example of a professional resume"
-            className="w-full h-[85vh]"
+            className="w-full h-[90vh]"
           />
         </div>
-        <div className="text-center p-8 flex flex-col justify-center">
+        <div className="text-center p-8 flex flex-col justify-center bg-gray-200">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
             Change Your Resume. Change Your Life.
           </h1>

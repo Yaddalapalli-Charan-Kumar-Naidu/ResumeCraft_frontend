@@ -85,7 +85,8 @@ export default function SignUp() {
     <Container component="main" maxWidth="lg">
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 20,
+          marginBottom:5,
         }}
       >
         <Grid container>
