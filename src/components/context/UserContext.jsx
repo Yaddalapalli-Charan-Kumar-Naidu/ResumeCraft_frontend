@@ -9,21 +9,28 @@ export const UserProvider = ({ children }) => {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [token,setToken]=useState(localStorage.getItem("token"));
-    // Fetch user data when the component mounts
+    const [token, setToken] = useState(localStorage.getItem("token"));
+
+    // Fetch user data when the token changes
     useEffect(() => {
         const fetchUserData = async () => {
+            if (!token) {
+                setLoading(false);
+                return;
+            }
+
             const config = {
                 method: 'get',
                 url: 'http://localhost:8267/user/profile',
                 headers: { 
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${token}`
                 }
             };
 
             try {
                 const response = await axios.request(config);
                 setUserData(response.data);
+                setError(null); // Clear any previous errors
             } catch (error) {
                 console.error("Error fetching user data:", error);
                 setError(error);
@@ -33,14 +40,16 @@ export const UserProvider = ({ children }) => {
         };
 
         fetchUserData();
-    }, [token]);
+    }, [token]); // Re-run effect when token changes
 
     // Provide the context value
     const contextValue = {
         userData,
         setUserData,
         loading,
-        error
+        error,
+        token,
+        setToken
     };
 
     return (

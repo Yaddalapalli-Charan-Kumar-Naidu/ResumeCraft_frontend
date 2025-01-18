@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const Profile = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const { userData: profileData, setUserData, loading, error } = useContext(userContext);
+    const { userData: profileData, setUserData, error } = useContext(userContext);
 
     // Construct the profile picture URL
     const profilePictureUrl = profileData?.profilePicture
@@ -19,24 +19,22 @@ const Profile = () => {
         try {
             const formData = new FormData();
             formData.append('name', updatedData.name);
-            formData.append('email', updatedData.email);
+            // formData.append('email', updatedData.email);
             formData.append('phone', updatedData.phone);
-            if (updatedData.image instanceof File) {
-                formData.append('image', updatedData.image);
-            }
 
             const config = {
                 method: 'put',
-                url: 'http://localhost:8267/user/profile',
+                url: 'http://localhost:8267/user/update-profile',
                 headers: { 
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
                     'Content-Type': 'multipart/form-data'
                 },
                 data: formData
             };
 
             const response = await axios.request(config);
-            setUserData(response.data); // Update context with new data
+            console.log("Profile updated successfully:", response.data);
+            setUserData(response.data); // Update the context with new data
             setIsEditModalOpen(false);
         } catch (error) {
             console.error("Error updating profile:", error);
@@ -47,10 +45,6 @@ const Profile = () => {
     const handleClose = () => {
         setIsEditModalOpen(false);
     };
-
-    if (loading) {
-        return <div className="flex justify-center items-center h-[90vh]">Loading...</div>;
-    }
 
     if (error) {
         return <div className="flex justify-center items-center h-[90vh]">Error: {error.message}</div>;
@@ -150,7 +144,7 @@ const EditModal = ({ profileData, onSave, onClose }) => {
             <div className="bg-white bg-opacity-90 backdrop-blur-md p-8 rounded-lg w-[40vw] max-w-md shadow-lg">
                 <h2 className="text-2xl font-bold mb-6 text-gray-800">Edit Profile</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-6">
+                    {/* <div className="mb-6">
                         <label className="block text-gray-700 mb-2">Profile Image</label>
                         <div className="flex items-center">
                             <img 
@@ -165,7 +159,7 @@ const EditModal = ({ profileData, onSave, onClose }) => {
                                 className="w-full px-3 py-2 border rounded"
                             />
                         </div>
-                    </div>
+                    </div> */}
                     <div className="mb-6">
                         <label className="block text-gray-700 mb-2">Name</label>
                         <input
@@ -176,7 +170,7 @@ const EditModal = ({ profileData, onSave, onClose }) => {
                             className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
-                    <div className="mb-6">
+                    {/* <div className="mb-6">
                         <label className="block text-gray-700 mb-2">Email</label>
                         <input
                             type="email"
@@ -185,7 +179,7 @@ const EditModal = ({ profileData, onSave, onClose }) => {
                             onChange={handleChange}
                             className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
-                    </div>
+                    </div> */}
                     <div className="mb-6">
                         <label className="block text-gray-700 mb-2">Phone</label>
                         <input

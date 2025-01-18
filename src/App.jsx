@@ -8,6 +8,8 @@ import Signup from './components/auth/Signup';
 import VerifyOtp from './components/auth/VerifyOtp';
 import Profile from './components/user/Profile';
 import { UserProvider } from './components/context/UserContext';
+import Dashboard from './components/user/Dashboard';
+
 function App() {
   
 
@@ -23,6 +25,7 @@ function App() {
         <Route path='/create-resume' element={<CreateResume/>}/>
         <Route path='/verify-otp' element={<VerifyOtp/>}/>
         <Route path='/profile' element={<Profile/>}/>
+        <Route path="/dashboard" element={<Dashboard/>}/>
       </Routes>
       </UserProvider>
       </Router>
