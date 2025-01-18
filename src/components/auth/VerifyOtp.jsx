@@ -40,7 +40,7 @@ const verifyOtp = () => {
     axios.request(config)
     .then((response) => {
       console.log(JSON.stringify(response.data));
-      navigate('/')
+      navigate('/login');
     })
     .catch((error) => {
       console.log(error);
