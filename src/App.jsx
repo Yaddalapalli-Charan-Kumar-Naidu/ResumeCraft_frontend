@@ -9,6 +9,7 @@ import VerifyOtp from './components/auth/VerifyOtp';
 import Profile from './components/user/Profile';
 import { UserProvider } from './components/context/UserContext';
 import Dashboard from './components/user/Dashboard';
+import ShowTemplates from './components/template/ShowTemplates';
 
 function App() {
   
@@ -26,6 +27,7 @@ function App() {
         <Route path='/verify-otp' element={<VerifyOtp/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path='/templates' element={<ShowTemplates/>}/>
       </Routes>
       </UserProvider>
       </Router>
