@@ -62,7 +62,7 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
     try {
       const config = {
         method: "post",
-        url: "http://localhost:8267/resume/",
+        url: `${import.meta.env.VITE_BASEURL}/resume/`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
@@ -100,7 +100,7 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
               Back
             </button>
 
-            <button
+            {/* <button
               type="button"
               onClick={() => setPage((prevPage) => prevPage + 1)}
               disabled={page === 7}
@@ -112,11 +112,22 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
               aria-disabled={page === 7}
             >
               Next
+            </button> */}
+            <button
+              onClick={handleSubmit}
+              disabled={isLoading}
+              className={`px-4 py-2 ${
+                isLoading
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-purple-600 text-white hover:bg-purple-700"
+              } rounded-md shadow mt-2`}
+            >
+              {isLoading ? "Saving..." : "Save"}
             </button>
           </div>
         </div>
         <p className="text-gray-600 mb-7">Provide your hobbies</p>
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-4">
           <div className="overflow-y-auto max-h-[60vh]">
             {hobbies.map((hobby, index) => (
               <div key={index} className="space-y-4 mb-7">
@@ -156,19 +167,7 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
           >
             Add Another Hobby
           </button>
-          <div className="flex justify-between items-center m-1">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`px-4 py-2 ${
-                isLoading
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-purple-600 text-white hover:bg-purple-700"
-              } rounded-md shadow mt-2`}
-            >
-              {isLoading ? "Saving..." : "Save"}
-            </button>
-          </div>
+          
         </form>
       </div>
     </div>

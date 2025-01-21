@@ -5,7 +5,7 @@ import axios from 'axios';
 const Profile = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const { userData: profileData, setUserData, error } = useContext(userContext);
-
+    // console.log(profileData);
     // Construct the profile picture URL
     const profilePictureUrl = profileData?.profilePicture
         ? `http://localhost:8267/${profileData.profilePicture.replace(/\\/g, '/')}`
@@ -18,13 +18,14 @@ const Profile = () => {
     const handleSave = async (updatedData) => {
         try {
             const formData = new FormData();
-            formData.append('name', updatedData.name);
+            formData.append('newName', updatedData.name);
             // formData.append('email', updatedData.email);
-            formData.append('phone', updatedData.phone);
+            formData.append('newPhoneNumber', updatedData.phone);
+            
 
             const config = {
                 method: 'put',
-                url: 'http://localhost:8267/user/update-profile',
+                url: `${import.meta.env.VITE_BASEURL}/user/update-profile`,
                 headers: { 
                     'Authorization': `Bearer ${localStorage.getItem("token")}`,
                     'Content-Type': 'multipart/form-data'
@@ -33,8 +34,12 @@ const Profile = () => {
             };
 
             const response = await axios.request(config);
-            console.log("Profile updated successfully:", response.data);
-            setUserData(response.data); // Update the context with new data
+            // console.log("Profile updated successfully:", response.data);
+            setUserData((prevData) => ({
+                ...prevData,
+                name: updatedData.name,
+                phone: updatedData.phone,
+            })); // Update the context with new data
             setIsEditModalOpen(false);
         } catch (error) {
             console.error("Error updating profile:", error);

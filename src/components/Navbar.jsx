@@ -17,6 +17,7 @@ const Navbar = () => {
   };
   const handleLogout=()=>{
     localStorage.removeItem("token");
+    setIsDropdownOpen(false);
     navigate("/");
   }
 

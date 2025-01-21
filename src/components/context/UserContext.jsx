@@ -21,7 +21,7 @@ export const UserProvider = ({ children }) => {
 
             const config = {
                 method: 'get',
-                url: 'http://localhost:8267/user/profile',
+                url: `${import.meta.env.VITE_BASEURL}/user/profile`,
                 headers: { 
                     'Authorization': `Bearer ${token}`
                 }

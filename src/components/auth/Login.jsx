@@ -12,7 +12,7 @@ import { Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 export default function Login() {
-  // const BASEURL="http://localhost:8267"
+  
   const BASEURL=import.meta.env.VITE_BASEURL;
   const navigate=useNavigate();
   const handleSubmit = (event) => {
@@ -32,7 +32,7 @@ export default function Login() {
     .then((response) => {
       console.log(JSON.stringify(response.data));
       localStorage.setItem("token",response.data.token);
-      navigate("/");
+      navigate("/dashboard");
     })
     .catch((error) => {
       console.log(error);
