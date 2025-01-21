@@ -9,8 +9,11 @@ import ProjectsDetailsForm from "./ProjectDetailsForm.jsx";
 import CertificationDetailsForm from "./CertificationDetailsForm.jsx";
 import HobbiesDetailsForm from "./HobbiesDetailsForm";
 import SkillsDetailsForm from "./SkillsDetailsForm.jsx";
+import { useParams } from "react-router-dom";
 export default function CreateResume() {
   const [page, setPage] = useState(0);
+  const {templateId}=useParams();
+  console.log(templateId);
   return (
     <ResumeProvider>
       <div className="grid grid-cols-1 md:grid-cols-2 h-[85vh] gap-10 p-10 my-5 items-center">
@@ -36,7 +39,8 @@ export default function CreateResume() {
         </div>
         <div className="border border-t-primary border-t-4 h-full rounded-xl px-4 bg-gray-100 shadow-xl overflow-y-auto max-h-[85vh] mt-5">
           <h2 className="text-xl font-bold mb-4">Resume Preview</h2>
-          <ResumeTemplate1 />
+          {templateId==1 && <ResumeTemplate1/>}
+          {templateId==2 && <ResumeTemplate2/>}
         </div>
       </div>
     </ResumeProvider>

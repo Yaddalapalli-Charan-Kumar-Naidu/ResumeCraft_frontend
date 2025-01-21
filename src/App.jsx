@@ -23,11 +23,12 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
-        <Route path='/create-resume' element={<CreateResume/>}/>
+        {/* <Route path='/create-resume' element={<CreateResume/>}/> */}
         <Route path='/verify-otp' element={<VerifyOtp/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path='/templates' element={<ShowTemplates/>}/>
+        <Route path='/create-resume/:templateId' element={<CreateResume/>}/>
       </Routes>
       </UserProvider>
       </Router>

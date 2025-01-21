@@ -10,7 +10,7 @@ function ShowTemplates() {
     return (
         <div className='mx-[10vw] my-[17vh] min-h-[90vh] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7'>
             {ResumeTemplates.map((template) => (
-                <Link to="/create-resume"
+                <Link to={`/create-resume/${template.id}`}
                     key={template.id}
                     style={{ 
                         backgroundImage: `url(${template.image})`,
