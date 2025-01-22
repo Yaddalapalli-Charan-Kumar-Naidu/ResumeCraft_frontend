@@ -1,96 +1,137 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { Button, Typography, Box } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from "axios";
-const verifyOtp = () => {
-  const location=useLocation();
-  const {email}=location.state||{};
-  const [otp, setOtp] = React.useState('');
-  const [error, setError] = React.useState('');
-  const navigate=useNavigate();
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import HashLoader from 'react-spinners/HashLoader'; // Import HashLoader
+
+const VerifyOtp = () => {
+  const location = useLocation();
+  const { email } = location.state || {};
+  const [otp, setOtp] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // State for loader
+  const navigate = useNavigate();
+
   const handleChange = (newValue) => {
     setOtp(newValue);
     setError(''); // Clear error when user types
   };
 
   const handleSubmit = () => {
-    if (otp.length === 6) {
-      // Perform OTP validation or submission logic here
-      console.log('OTP submitted:', otp);
-      setError('');
-    } else {
+    if (otp.length !== 6) {
       setError('Please enter a valid 6-digit OTP.');
+      return;
     }
-    let data = JSON.stringify({
-      "email": email,
-      "otp": otp,
+
+    setIsSubmitting(true); // Show loader
+
+    const data = JSON.stringify({
+      email: email,
+      otp: otp,
     });
-    
-    let config = {
+
+    const config = {
       method: 'post',
       maxBodyLength: Infinity,
       url: 'http://localhost:8267/auth/verify-otp?',
-      headers: { 
-        'Content-Type': 'application/json', 
+      headers: {
+        'Content-Type': 'application/json',
       },
-      data : data
+      data: data,
     };
-    
-    axios.request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-      navigate('/login');
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-    
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        toast.success('OTP verified successfully! Redirecting to login...'); // Success toast
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000); // Redirect after 2 seconds
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response) {
+          // Server responded with a status code outside 2xx
+          toast.error(`OTP verification failed: ${error.response.data.message || 'Unknown error'}`); // Error toast
+        } else if (error.request) {
+          // No response received
+          toast.error('Network error. Please try again.'); // Network error toast
+        } else {
+          // Something else went wrong
+          toast.error('An unexpected error occurred.'); // Generic error toast
+        }
+      })
+      .finally(() => {
+        setIsSubmitting(false); // Hide loader
+      });
   };
 
   return (
-    <div className='flex justify-center items-center h-[85vh]'>
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent:'center',
-        gap: 2,
-        maxWidth: 400,
-        margin: '0 auto',
-        padding: 3,
-      }}
-    >
-      <Typography variant="h6" gutterBottom>
-        Enter OTP
-      </Typography>
-      <Typography>
-        OTP sent to {email}
-      </Typography>
-      <MuiOtpInput
-        value={otp}
-        onChange={handleChange}
-        length={6} // Set the OTP length to 6
-        autoFocus // Automatically focus the first input
-        validateChar={(char) => /^\d+$/.test(char)} // Only allow numeric input
-        sx={{ gap: 1 }} // Customize the spacing between inputs
-      />
-      {error && (
-        <Typography color="error" variant="body2">
-          {error}
-        </Typography>
-      )}
-      <Button
-        variant="contained"
-        onClick={handleSubmit}
-        disabled={otp.length !== 6} // Disable button if OTP is incomplete
+    <div className="flex justify-center items-center h-[85vh]">
+      <ToastContainer position="bottom-right" autoClose={3000} /> {/* Toast container */}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 2,
+          maxWidth: 400,
+          margin: '0 auto',
+          padding: 3,
+        }}
       >
-        Submit
-      </Button>
-    </Box>
+        <Typography variant="h6" gutterBottom>
+          Enter OTP
+        </Typography>
+        <Typography>OTP sent to {email}</Typography>
+        <MuiOtpInput
+          value={otp}
+          onChange={handleChange}
+          length={6} // Set the OTP length to 6
+          autoFocus // Automatically focus the first input
+          validateChar={(char) => /^\d+$/.test(char)} // Only allow numeric input
+          sx={{ gap: 1 }} // Customize the spacing between inputs
+        />
+        {error && (
+          <Typography color="error" variant="body2">
+            {error}
+          </Typography>
+        )}
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+          disabled={otp.length !== 6 || isSubmitting} // Disable button if OTP is incomplete or submitting
+        >
+          {isSubmitting ? 'Verifying...' : 'Submit'}
+        </Button>
+      </Box>
+
+      {/* HashLoader */}
+      {isSubmitting && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 9999,
+          }}
+        >
+          <HashLoader color="purple" size={60} /> {/* Use HashLoader */}
+        </Box>
+      )}
     </div>
   );
 };
 
-export default verifyOtp;
+export default VerifyOtp;

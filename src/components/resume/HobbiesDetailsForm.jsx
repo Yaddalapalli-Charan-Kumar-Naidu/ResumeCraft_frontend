@@ -1,6 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import ResumeContext from "../context/ResumeContext";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify"; // Import toast and ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Import toast CSS
+import HashLoader from "react-spinners/HashLoader"; // Import HashLoader
 
 const HobbiesDetailsForm = ({ page, setPage, isEdit }) => {
   const { resumeData, setResumeData } = useContext(ResumeContext);
@@ -96,6 +99,10 @@ const HobbiesDetailsForm = ({ page, setPage, isEdit }) => {
     if (!isHobbiesValid) {
       setError("Please enter at least one hobby.");
       setIsLoading(false);
+      toast.error("Please enter at least one hobby.", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
       return;
     }
 
@@ -105,19 +112,31 @@ const HobbiesDetailsForm = ({ page, setPage, isEdit }) => {
     try {
       let response;
       if (isEdit) {
-        response = await updateResume(updatedResumeData); 
-        console.log("updated");// Update existing resume
+        response = await updateResume(updatedResumeData);
+        console.log("updated");
       } else {
-        response = await createResume(updatedResumeData); // Create new resume
+        response = await createResume(updatedResumeData);
         console.log("created");
       }
 
       console.log("Resume saved:", response);
       setSuccess(true); // Show success message
       setError(null); // Clear any previous errors
+      toast.success("Resume saved successfully!", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
+      setTimeout(()=>{toast.success("Download it by clicking generate pdf", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });},1000);
     } catch (error) {
       console.error("Error saving resume:", error);
       setError("An error occurred while saving the resume. Please try again.");
+      toast.error("An error occurred while saving the resume. Please try again.", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -125,6 +144,26 @@ const HobbiesDetailsForm = ({ page, setPage, isEdit }) => {
 
   return (
     <div className="flex justify-center items-center h-full w-full mt-8">
+      {/* ToastContainer must be included for toast messages to work */}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
+      {/* Purple HashLoader */}
+      {isLoading && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <HashLoader color="#9333ea" size={60} /> {/* Purple color */}
+        </div>
+      )}
+
       <div className="w-screen max-w-4xl bg-white rounded-lg shadow-lg p-7">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-800">Hobbies</h2>
@@ -160,18 +199,18 @@ const HobbiesDetailsForm = ({ page, setPage, isEdit }) => {
         <p className="text-gray-600 mb-7">Provide your hobbies</p>
 
         {/* Display error message */}
-        {error && (
+        {/* {error && (
           <div className="mb-4 p-2 bg-red-100 text-red-600 rounded-md">
             {error}
           </div>
-        )}
+        )} */}
 
         {/* Display success message */}
-        {success && (
+        {/* {success && (
           <div className="mb-4 p-2 bg-green-100 text-green-600 rounded-md">
             Resume saved successfully!
           </div>
-        )}
+        )} */}
 
         <form className="space-y-4">
           <div className="overflow-y-auto max-h-[60vh]">

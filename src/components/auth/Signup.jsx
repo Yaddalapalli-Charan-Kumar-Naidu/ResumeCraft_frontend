@@ -13,9 +13,12 @@ import { Container } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import HashLoader from 'react-spinners/HashLoader';
 
 export default function SignUp() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -55,38 +58,61 @@ export default function SignUp() {
       return;
     }
 
-    // Simulate form submission (no backend connection)
-    const data = formData;
-    // console.log("Form Data:", formData);
-    const BASEURL=import.meta.env.VITE_BASEURL;
+    // Prepare form data for submission
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("email", formData.email);
+    data.append("password", formData.password);
+    data.append("phoneNumber", formData.phoneNumber);
+    if (formData.profilePicture) {
+      data.append("profilePicture", formData.profilePicture);
+    }
+
+    const BASEURL = import.meta.env.VITE_BASEURL;
     let config = {
       method: "post",
       maxBodyLength: Infinity,
       url: `${BASEURL}/auth/signup`,
       data: data,
+      headers: {
+        "Content-Type": "multipart/form-data", // Important for file uploads
+      },
     };
 
     axios
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        alert("Signup successful! ");
-        navigate("/verify-otp",{state:{email:formData.email}});
+        toast.success("Signup successful! Redirecting to OTP verification..."); // Success toast
+        setTimeout(() => {
+          navigate("/verify-otp", { state: { email: formData.email } });
+        }, 2000); // Redirect after 2 seconds
       })
       .catch((error) => {
         console.log(error);
+        if (error.response) {
+          // Server responded with a status code outside 2xx
+          toast.error(`Signup failed: ${error.response.data.message || "Unknown error"}`); // Error toast
+        } else if (error.request) {
+          // No response received
+          toast.error("Network error. Please try again."); // Network error toast
+        } else {
+          // Something else went wrong
+          toast.error("An unexpected error occurred."); // Generic error toast
+        }
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
-
-    
-    setIsSubmitting(false);
   };
 
   return (
     <Container component="main" maxWidth="lg">
+      <ToastContainer position="top-center" autoClose={3000} /> {/* Toast container */}
       <Box
         sx={{
           marginTop: 20,
-          marginBottom:5,
+          marginBottom: 5,
         }}
       >
         <Grid container>
@@ -257,6 +283,26 @@ export default function SignUp() {
           </Grid>
         </Grid>
       </Box>
+
+      {/* WifiLoader */}
+      {isSubmitting && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 9999,
+          }}
+        >
+          <HashLoader color="purple" size={60} />
+        </Box>
+      )}
     </Container>
   );
 }

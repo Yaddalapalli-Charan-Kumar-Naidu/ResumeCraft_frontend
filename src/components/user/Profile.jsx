@@ -1,11 +1,15 @@
 import React, { useContext, useState } from 'react';
 import { userContext } from '../context/UserContext';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify'; // Import toast and ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
+import HashLoader from 'react-spinners/HashLoader'; // Import HashLoader
 
 const Profile = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false); // State for loader
     const { userData: profileData, setUserData, error } = useContext(userContext);
-    // console.log(profileData);
+
     // Construct the profile picture URL
     const profilePictureUrl = profileData?.profilePicture
         ? `http://localhost:8267/${profileData.profilePicture.replace(/\\/g, '/')}`
@@ -16,12 +20,11 @@ const Profile = () => {
     };
 
     const handleSave = async (updatedData) => {
+        setIsLoading(true); // Show loader
         try {
             const formData = new FormData();
             formData.append('newName', updatedData.name);
-            // formData.append('email', updatedData.email);
             formData.append('newPhoneNumber', updatedData.phone);
-            
 
             const config = {
                 method: 'put',
@@ -34,16 +37,24 @@ const Profile = () => {
             };
 
             const response = await axios.request(config);
-            // console.log("Profile updated successfully:", response.data);
             setUserData((prevData) => ({
                 ...prevData,
                 name: updatedData.name,
                 phone: updatedData.phone,
             })); // Update the context with new data
             setIsEditModalOpen(false);
+            toast.success("Profile updated successfully!", {
+                position: "bottom-right",
+                autoClose: 3000,
+            }); // Success toast
         } catch (error) {
             console.error("Error updating profile:", error);
-            alert("Failed to update profile. Please try again.");
+            toast.error("Failed to update profile. Please try again.", {
+                position: "bottom-right",
+                autoClose: 3000,
+            }); // Error toast
+        } finally {
+            setIsLoading(false); // Hide loader
         }
     };
 
@@ -60,6 +71,26 @@ const Profile = () => {
             className="flex justify-center items-center h-[90vh] bg-cover bg-center mt-[10vh]"
             style={{ backgroundImage: `url('https://wallpapercave.com/wp/wp3274386.jpg')` }}
         >
+            {/* ToastContainer must be included for toast messages to work */}
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
+
+            {/* Purple HashLoader */}
+            {isLoading && (
+                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+                    <HashLoader color="#9333ea" size={60} /> {/* Purple color */}
+                </div>
+            )}
+
             {/* Glassmorphism Effect */}
             <div className="min-h-[60vh] min-w-[50vw] border border-2 border-white border-opacity-20 flex flex-col items-center p-8 rounded-lg backdrop-blur-sm bg-white bg-opacity-10 shadow-lg">
                 <div className="relative">
@@ -119,11 +150,17 @@ const EditModal = ({ profileData, onSave, onClose }) => {
         if (file) {
             // Validate file type and size
             if (!file.type.startsWith('image/')) {
-                alert("Please upload a valid image file.");
+                toast.error("Please upload a valid image file.", {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                });
                 return;
             }
             if (file.size > 5 * 1024 * 1024) { // 5MB limit
-                alert("File size must be less than 5MB.");
+                toast.error("File size must be less than 5MB.", {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                });
                 return;
             }
 
@@ -149,22 +186,6 @@ const EditModal = ({ profileData, onSave, onClose }) => {
             <div className="bg-white bg-opacity-90 backdrop-blur-md p-8 rounded-lg w-[40vw] max-w-md shadow-lg">
                 <h2 className="text-2xl font-bold mb-6 text-gray-800">Edit Profile</h2>
                 <form onSubmit={handleSubmit}>
-                    {/* <div className="mb-6">
-                        <label className="block text-gray-700 mb-2">Profile Image</label>
-                        <div className="flex items-center">
-                            <img 
-                                src={previewImage} // Use the preview image or fallback
-                                alt="profile preview" 
-                                className="rounded-full h-16 w-16 border-2 border-gray-300 mr-4"
-                            />
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageChange}
-                                className="w-full px-3 py-2 border rounded"
-                            />
-                        </div>
-                    </div> */}
                     <div className="mb-6">
                         <label className="block text-gray-700 mb-2">Name</label>
                         <input
@@ -175,16 +196,6 @@ const EditModal = ({ profileData, onSave, onClose }) => {
                             className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
-                    {/* <div className="mb-6">
-                        <label className="block text-gray-700 mb-2">Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData?.email || ""}
-                            onChange={handleChange}
-                            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div> */}
                     <div className="mb-6">
                         <label className="block text-gray-700 mb-2">Phone</label>
                         <input

@@ -1,51 +1,78 @@
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import {Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Container } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import HashLoader from 'react-spinners/HashLoader';
+
 export default function Login() {
-  
-  const BASEURL=import.meta.env.VITE_BASEURL;
-  const navigate=useNavigate();
+  const BASEURL = import.meta.env.VITE_BASEURL;
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false); // State for loader
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    setIsSubmitting(true); // Show loader
+
     const data = new FormData(event.currentTarget);
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: `${BASEURL}/auth/login`,
-      headers: { 
-        'Content-Type': 'application/json', 
-      },
-      data : data
-    };
-    
-    axios.request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-      localStorage.setItem("token",response.data.token);
-      navigate("/dashboard");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-    console.log({
+
+    // Convert FormData to a plain object
+    const payload = {
       email: data.get("email"),
       password: data.get("password"),
-    });
+    };
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${BASEURL}/auth/login`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: payload, // Use the payload object instead of FormData
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        localStorage.setItem("token", response.data.token);
+        toast.success("Login successful! Redirecting..."); // Success toast
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000); // Redirect after 2 seconds
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response) {
+          // Server responded with a status code outside 2xx
+          toast.error(`Login failed: ${error.response.data.message || "Unknown error"}`); // Error toast
+        } else if (error.request) {
+          // No response received
+          toast.error("Network error. Please try again."); // Network error toast
+        } else {
+          // Something else went wrong
+          toast.error("An unexpected error occurred."); // Generic error toast
+        }
+      })
+      .finally(() => {
+        setIsSubmitting(false); // Hide loader
+      });
   };
 
   return (
-    
     <Container component="main" maxWidth="lg">
+      <ToastContainer position="bottom-right" autoClose={3000} /> {/* Toast container */}
       <Box
         sx={{
           marginTop: 15,
@@ -125,12 +152,13 @@ export default function Login() {
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
+                  disabled={isSubmitting} // Disable button while submitting
                 >
-                  Sign In
+                  {isSubmitting ? "Logging In..." : "Sign In"}
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <Link href="#" variant="body2">
+                    <Link to="#" variant="body2">
                       Forgot password?
                     </Link>
                   </Grid>
@@ -145,7 +173,26 @@ export default function Login() {
           </Grid>
         </Grid>
       </Box>
-    </Container>
 
+      {/* WifiLoader */}
+      {isSubmitting && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
+            zIndex: 9999,
+          }}
+        >
+          <HashLoader color="purple" size={60} /> 
+        </Box>
+      )}
+    </Container>
   );
 }

@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaEdit, FaTrash } from 'react-icons/fa'; // Importing icons
+import { toast, ToastContainer } from 'react-toastify'; // Import toast and ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
+import HashLoader from 'react-spinners/HashLoader'; // Import HashLoader
 
 function Dashboard() {
   const [resumeData, setResumeData] = useState({ resumes: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false); // State for delete loader
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,6 +29,10 @@ function Dashboard() {
         setResumeData(response.data || { resumes: [] });
       } catch (err) {
         setError(err.message || 'An error occurred while fetching resumes.');
+        toast.error("Failed to fetch resumes. Please try again.", {
+          position: "bottom-right",
+          autoClose: 3000,
+        }); // Error toast
       } finally {
         setLoading(false);
       }
@@ -34,6 +42,7 @@ function Dashboard() {
   }, []);
 
   const handleDelete = async (id) => {
+    setIsDeleting(true); // Show loader
     try {
       const config = {
         method: 'delete',
@@ -50,9 +59,20 @@ function Dashboard() {
         ...prev,
         resumes: prev.resumes.filter((resume) => resume._id !== id), // Use _id instead of id
       }));
+
+      toast.success("Resume deleted successfully!", {
+        position: "bottom-right",
+        autoClose: 3000,
+      }); // Success toast
     } catch (err) {
       console.error('Error deleting resume:', err.message);
       setError('An error occurred while deleting the resume. Please try again.');
+      toast.error("Failed to delete resume. Please try again.", {
+        position: "bottom-right",
+        autoClose: 3000,
+      }); // Error toast
+    } finally {
+      setIsDeleting(false); // Hide loader
     }
   };
 
@@ -62,7 +82,11 @@ function Dashboard() {
   };
 
   if (loading) {
-    return <div className="text-center mt-10">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-[90vh]">
+        <HashLoader color="#9333ea" size={60} /> {/* Purple color */}
+      </div>
+    );
   }
 
   if (error) {
@@ -72,7 +96,30 @@ function Dashboard() {
   }
 
   return (
+    <div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        style={{ display: 'none' }}
+      />
     <div className="mx-[10vw] my-[15vh] min-h-[90vh] grid grid-cols-1 md:grid-cols-4 gap-6">
+      {/* ToastContainer must be included for toast messages to work */}
+      
+
+      {/* Purple HashLoader for delete action */}
+      {isDeleting && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <HashLoader color="#9333ea" size={60} /> {/* Purple color */}
+        </div>
+      )}
+
       <Link
         to="/templates"
         className="w-[15vw] h-[40vh] border border-purple-600 rounded-lg flex justify-center items-center text-4xl shadow-lg hover:shadow-purple-400 hover:shadow-lg cursor-pointer"
@@ -117,6 +164,7 @@ function Dashboard() {
           No resumes found.
         </div>
       )}
+    </div>
     </div>
   );
 }
