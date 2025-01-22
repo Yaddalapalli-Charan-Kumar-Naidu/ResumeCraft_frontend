@@ -18,7 +18,7 @@ function ShowTemplates() {
     };
 
     return (
-        <div className='mx-[10vw] my-[17vh] min-h-[90vh] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7'>
+        <div className='mx-4 my-8 mt-[15vh] min-h-[90vh] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
             {/* ToastContainer must be included for toast messages to work */}
             <ToastContainer
                 position="bottom-right"
@@ -39,11 +39,11 @@ function ShowTemplates() {
                     onClick={() => handleTemplateClick(template.name)} // Trigger toast on click
                     style={{ 
                         backgroundImage: `url(${template.image})`,
-                        backgroundSize: 'contain', // Ensures the image covers the card
+                        backgroundSize: 'cover', // Ensures the image covers the card
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat' // Centers the image
                     }}
-                    className='w-full h-[40vh] border border-purple-600 rounded-lg flex justify-center items-center text-4xl text-white font-bold shadow-lg hover:shadow-purple-300 hover:shadow-xl cursor-pointer transition-shadow duration-300 relative'
+                    className='w-full h-48 md:h-64 border border-purple-600 rounded-lg flex justify-center items-center text-2xl md:text-4xl text-white font-bold shadow-lg hover:shadow-purple-300 hover:shadow-xl cursor-pointer transition-shadow duration-300 relative'
                 >
                     {/* Overlay for better text visibility */}
                     <div className='absolute inset-0 bg-black bg-opacity-30 rounded-lg'></div>
