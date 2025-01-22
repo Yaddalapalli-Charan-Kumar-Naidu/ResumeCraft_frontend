@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 function ShowTemplates() {
     const ResumeTemplates = [
-        { id: 1, name: "Template 1", image: "https://s3.resume.io/cdn-cgi/image/width=380,dpr=1,format=auto/uploads/local_template_image/image/383/persistent-resource/santiago-resume-templates.jpg?v=1656070649" },
+        { id: "64d5f9f6b3e2a9a1d8e4f9a8", name: "Template 1", image: "https://s3.resume.io/cdn-cgi/image/width=380,dpr=1,format=auto/uploads/local_template_image/image/383/persistent-resource/santiago-resume-templates.jpg?v=1656070649" },
         { id: 2, name: "Template 2", image: "https://s3.resume.io/cdn-cgi/image/width=380,dpr=1,format=auto/uploads/local_template_image/image/372/persistent-resource/stockholm-resume-templates.jpg?v=1656506913" }
     ];
 

@@ -2,11 +2,14 @@ import React, { useContext, useState, useEffect } from "react";
 import ResumeContext from "../context/ResumeContext";
 import axios from "axios";
 
-const HobbiesDetailsForm = ({ page, setPage }) => {
+const HobbiesDetailsForm = ({ page, setPage, isEdit }) => {
   const { resumeData, setResumeData } = useContext(ResumeContext);
   const [hobbies, setHobbies] = useState([""]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
+  // Initialize hobbies from resumeData
   useEffect(() => {
     if (resumeData.hobbies && resumeData.hobbies.length > 0) {
       setHobbies(resumeData.hobbies);
@@ -15,6 +18,7 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
     }
   }, [resumeData]);
 
+  // Handle input change for hobbies
   const handleChange = (e, index) => {
     const { value } = e.target;
     const newHobbies = [...hobbies];
@@ -30,10 +34,12 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
     });
   };
 
+  // Add a new hobby field
   const handleAddHobby = () => {
     setHobbies([...hobbies, ""]);
   };
 
+  // Remove a hobby field
   const handleRemoveHobby = (index) => {
     const newHobbies = [...hobbies];
     newHobbies.splice(index, 1);
@@ -44,14 +50,17 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
     });
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
+    setSuccess(false);
 
     // Validate that at least one hobby is filled
     const isHobbiesValid = hobbies.some((hobby) => hobby.trim() !== "");
     if (!isHobbiesValid) {
-      alert("Please enter at least one hobby.");
+      setError("Please enter at least one hobby.");
       setIsLoading(false);
       return;
     }
@@ -59,10 +68,16 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
     // Update resumeData with the latest hobbies
     const updatedResumeData = { ...resumeData, hobbies };
 
+    // Determine the API URL and method based on whether it's an edit or create operation
+    const url = isEdit
+      ? `${import.meta.env.VITE_BASEURL}/resume/${resumeData._id}`
+      : `${import.meta.env.VITE_BASEURL}/resume/`;
+    const method = isEdit ? "put" : "post";
+
     try {
       const config = {
-        method: "post",
-        url: `${import.meta.env.VITE_BASEURL}/resume/`,
+        method: method,
+        url: url,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
@@ -72,9 +87,11 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
 
       const response = await axios.request(config);
       console.log("Resume saved:", response.data);
-
+      setSuccess(true); // Show success message
+      setError(null); // Clear any previous errors
     } catch (error) {
       console.error("Error saving resume:", error);
+      setError("An error occurred while saving the resume. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -100,19 +117,6 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
               Back
             </button>
 
-            {/* <button
-              type="button"
-              onClick={() => setPage((prevPage) => prevPage + 1)}
-              disabled={page === 7}
-              className={`px-4 py-2 rounded-md shadow mx-2 ${
-                page === 7
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-purple-600 text-white hover:bg-purple-500"
-              }`}
-              aria-disabled={page === 7}
-            >
-              Next
-            </button> */}
             <button
               onClick={handleSubmit}
               disabled={isLoading}
@@ -126,7 +130,23 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
             </button>
           </div>
         </div>
+
         <p className="text-gray-600 mb-7">Provide your hobbies</p>
+
+        {/* Display error message */}
+        {error && (
+          <div className="mb-4 p-2 bg-red-100 text-red-600 rounded-md">
+            {error}
+          </div>
+        )}
+
+        {/* Display success message */}
+        {success && (
+          <div className="mb-4 p-2 bg-green-100 text-green-600 rounded-md">
+            Resume saved successfully!
+          </div>
+        )}
+
         <form className="space-y-4">
           <div className="overflow-y-auto max-h-[60vh]">
             {hobbies.map((hobby, index) => (
@@ -167,7 +187,6 @@ const HobbiesDetailsForm = ({ page, setPage }) => {
           >
             Add Another Hobby
           </button>
-          
         </form>
       </div>
     </div>

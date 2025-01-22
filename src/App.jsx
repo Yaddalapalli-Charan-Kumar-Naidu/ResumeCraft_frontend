@@ -11,6 +11,7 @@ import { UserProvider } from './components/context/UserContext';
 import Dashboard from './components/user/Dashboard';
 import ShowTemplates from './components/template/ShowTemplates';
 import PageNotFound from './components/Error/PageNotFound';
+import { ResumeProvider } from './components/context/ResumeContext';
 function App() {
   
 
@@ -18,6 +19,7 @@ function App() {
     <>
     <Router>
     <UserProvider>
+      <ResumeProvider>
       <Navbar/>
       <Routes>
         <Route path="/" element={<Home/>}/>
@@ -28,8 +30,10 @@ function App() {
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path='/templates' element={<ShowTemplates/>}/>
         <Route path='/create-resume/:templateId' element={<CreateResume/>}/>
+        <Route path='/resume/:templateId' element={<CreateResume/>}/>
         <Route path="*" element={<PageNotFound/>}/>
       </Routes>
+      </ResumeProvider>
       </UserProvider>
       </Router>
     </>
