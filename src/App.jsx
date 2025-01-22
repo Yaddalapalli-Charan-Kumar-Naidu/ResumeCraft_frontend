@@ -1,43 +1,50 @@
-import { useState } from 'react'
-import Navbar from './components/Navbar'
-import Login from "./components/auth/Login"
-import Home from './components/Home'
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import CreateResume from './components/resume/CreateResume';
-import Signup from './components/auth/Signup';
-import VerifyOtp from './components/auth/VerifyOtp';
-import Profile from './components/user/Profile';
-import { UserProvider } from './components/context/UserContext';
-import Dashboard from './components/user/Dashboard';
-import ShowTemplates from './components/template/ShowTemplates';
+import Navbar from './components/Navbar';
+import Home from './components/Home';
 import PageNotFound from './components/Error/PageNotFound';
+import { UserProvider } from './components/context/UserContext';
 import { ResumeProvider } from './components/context/ResumeContext';
-function App() {
-  
+import ProtectedRoute from './ProtectedRoute';
 
+// Lazy load components for better performance
+const Login = lazy(() => import('./components/auth/Login'));
+const Signup = lazy(() => import('./components/auth/Signup'));
+const VerifyOtp = lazy(() => import('./components/auth/VerifyOtp'));
+const Profile = lazy(() => import('./components/user/Profile'));
+const Dashboard = lazy(() => import('./components/user/Dashboard'));
+const ShowTemplates = lazy(() => import('./components/template/ShowTemplates'));
+const CreateResume = lazy(() => import('./components/resume/CreateResume'));
+
+function App() {
   return (
-    <>
     <Router>
-    <UserProvider>
-      <ResumeProvider>
-      <Navbar/>
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/signup' element={<Signup/>}/>
-        <Route path='/verify-otp' element={<VerifyOtp/>}/>
-        <Route path='/profile' element={<Profile/>}/>
-        <Route path="/dashboard" element={<Dashboard/>}/>
-        <Route path='/templates' element={<ShowTemplates/>}/>
-        <Route path='/create-resume/:templateId' element={<CreateResume/>}/>
-        <Route path='/resume/:templateId' element={<CreateResume/>}/>
-        <Route path="*" element={<PageNotFound/>}/>
-      </Routes>
-      </ResumeProvider>
+      <UserProvider>
+        <ResumeProvider>
+          <Navbar />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<Home />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/signup' element={<Signup />} />
+              <Route path='/verify-otp' element={<VerifyOtp />} />
+
+              {/* Private routes */}
+              <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path='/templates' element={<ProtectedRoute><ShowTemplates /></ProtectedRoute>} />
+              <Route path='/create-resume/:templateId' element={<ProtectedRoute><CreateResume /></ProtectedRoute>} />
+              <Route path='/resume/:templateId' element={<ProtectedRoute><CreateResume /></ProtectedRoute>} />
+
+              {/* 404 page */}
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </Suspense>
+        </ResumeProvider>
       </UserProvider>
-      </Router>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
