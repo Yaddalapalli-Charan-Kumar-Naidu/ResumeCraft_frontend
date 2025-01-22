@@ -43,7 +43,7 @@ export default function Home() {
             future today—your dream job is just a resume away!
           </div>
           <div className="flex flex-col md:flex-row justify-around mt-8">
-            <Link to="/create-resume">
+            <Link to="/templates">
               <button
                 aria-label="Create New Resume"
                 className="border rounded-xl text-white px-8 py-2 my-3 mx-3 bg-primary hover:scale-105 hover:bg-secondary-400 w-full md:w-auto"
@@ -51,12 +51,12 @@ export default function Home() {
                 Create New Resume
               </button>
             </Link>
-            <button
+            <Link to="/dashboard"
               aria-label="Improve Resume"
               className="border rounded-xl px-8 py-2 my-3 border border-primary hover:scale-110 hover:bg-white w-full md:w-auto"
             >
               Improve Resume
-            </button>
+            </Link>
           </div>
         </div>
       </div>

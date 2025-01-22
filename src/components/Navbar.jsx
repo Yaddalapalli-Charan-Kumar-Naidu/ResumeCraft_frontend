@@ -1,10 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { userContext } from "./context/UserContext";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // For user profile dropdown
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // For mobile menu
   const dropdownRef = useRef(null);
+  const {userData,loading}=useContext(userContext);
+
+  const profilePictureUrl = userData?.profilePicture
+        ? `http://localhost:8267/${userData.profilePicture.replace(/\\/g, '/')}`
+        : 'https://static.vecteezy.com/system/resources/previews/020/765/399/large_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg'; // Fallback image
+
   const navigate=useNavigate();
   // Function to toggle dropdown visibility
   const toggleDropdown = () => {
@@ -101,7 +108,7 @@ const Navbar = () => {
                 className="flex items-center focus:outline-none"
               >
                 <img
-                  src="https://via.placeholder.com/40" // Replace with user profile image
+                  src={profilePictureUrl} // Replace with user profile image
                   alt="User Profile"
                   className="rounded-full h-10 w-10"
                 />
