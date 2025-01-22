@@ -11,7 +11,6 @@ const HobbiesDetailsForm = ({ page, setPage, isEdit }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-
   // Initialize hobbies from resumeData
   useEffect(() => {
     if (resumeData.hobbies && resumeData.hobbies.length > 0) {
@@ -130,6 +129,7 @@ const HobbiesDetailsForm = ({ page, setPage, isEdit }) => {
         position: "bottom-right",
         autoClose: 3000,
       });},1000);
+      
     } catch (error) {
       console.error("Error saving resume:", error);
       setError("An error occurred while saving the resume. Please try again.");

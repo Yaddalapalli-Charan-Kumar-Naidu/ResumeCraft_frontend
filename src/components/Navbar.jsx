@@ -59,6 +59,12 @@ const Navbar = () => {
 
           {/* Navigation Links (Desktop) */}
           <div className="hidden md:flex items-center space-x-8">
+          <Link
+              to="/"
+              className="text-gray-700 hover:text-purple-600 font-medium"
+            >
+              Home
+            </Link>
             {localStorage.getItem("token")&&<Link
               to="/dashboard"
               className="text-gray-700 hover:text-purple-600 font-medium"

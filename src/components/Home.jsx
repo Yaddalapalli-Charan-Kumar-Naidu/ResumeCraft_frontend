@@ -1,9 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { ToastContainer } from "react-toastify"; // Import ToastContainer (optional for future use)
+import "react-toastify/dist/ReactToastify.css"; // Import toast CSS (optional for future use)
 
 export default function Home() {
   return (
     <div className="w-screen bg-gray-100">
+      {/* ToastContainer (optional for future use) */}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
       {/* Hero Section */}
       <div className="flex flex-col md:flex-row-reverse justify-center items-center w-full min-h-[90vh] px-4 mt-7">
         <div className="w-full md:w-[50vw]">
@@ -120,8 +135,6 @@ export default function Home() {
           </ul>
         </div>
       </div>
-
-      
     </div>
   );
 }
