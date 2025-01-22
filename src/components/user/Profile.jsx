@@ -12,7 +12,7 @@ const Profile = () => {
 
     // Construct the profile picture URL
     const profilePictureUrl = profileData?.profilePicture
-        ? `http://localhost:8267/${profileData.profilePicture.replace(/\\/g, '/')}`
+        ? `${import.meta.env.VITE_BASEURL}/${profileData.profilePicture.replace(/\\/g, '/')}`
         : 'https://static.vecteezy.com/system/resources/previews/020/765/399/large_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg'; // Fallback image
 
     const handleEditClick = () => {
@@ -133,7 +133,7 @@ const EditModal = ({ profileData, onSave, onClose }) => {
     const [formData, setFormData] = useState(profileData);
     const [previewImage, setPreviewImage] = useState(
         profileData?.profilePicture
-            ? `http://localhost:8267/${profileData.profilePicture.replace(/\\/g, '/')}`
+            ? `${import.meta.env.VITE_BASEURL}/${profileData.profilePicture.replace(/\\/g, '/')}`
             : 'default-profile.png'
     );
 

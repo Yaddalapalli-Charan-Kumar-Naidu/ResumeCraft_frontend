@@ -9,7 +9,7 @@ const Navbar = () => {
   const {userData,loading}=useContext(userContext);
 
   const profilePictureUrl = userData?.profilePicture
-        ? `http://localhost:8267/${userData.profilePicture.replace(/\\/g, '/')}`
+        ? `${import.meta.env.VITE_BASEURL}/${userData.profilePicture.replace(/\\/g, '/')}`
         : 'https://static.vecteezy.com/system/resources/previews/020/765/399/large_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg'; // Fallback image
 
   const navigate=useNavigate();

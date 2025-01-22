@@ -36,7 +36,7 @@ const VerifyOtp = () => {
     const config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'http://localhost:8267/auth/verify-otp?',
+      url: `${import.meta.env.VITE_BASEURL}/auth/verify-otp?`,
       headers: {
         'Content-Type': 'application/json',
       },
