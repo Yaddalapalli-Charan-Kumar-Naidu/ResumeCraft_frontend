@@ -20,11 +20,6 @@ const PageNotFound = () => {
           Go Back Home
         </a>
       </div>
-
-      {/* Optional: Footer or Additional Links */}
-      <div className="mt-12 text-sm text-gray-400">
-        <p>Need help? <a href="/contact" className="text-blue-500 hover:underline">Contact us</a></p>
-      </div>
     </div>
   );
 };
