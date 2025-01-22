@@ -50,6 +50,40 @@ const HobbiesDetailsForm = ({ page, setPage, isEdit }) => {
     });
   };
 
+  // Create a new resume
+  const createResume = async (resumeData) => {
+    const url = `${import.meta.env.VITE_BASEURL}/resume/`;
+    const config = {
+      method: "post",
+      url: url,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      data: resumeData,
+    };
+
+    const response = await axios.request(config);
+    return response.data;
+  };
+
+  // Update an existing resume
+  const updateResume = async (resumeData) => {
+    const url = `${import.meta.env.VITE_BASEURL}/resume/${resumeData._id}`;
+    const config = {
+      method: "put",
+      url: url,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      data: resumeData,
+    };
+
+    const response = await axios.request(config);
+    return response.data;
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,25 +102,17 @@ const HobbiesDetailsForm = ({ page, setPage, isEdit }) => {
     // Update resumeData with the latest hobbies
     const updatedResumeData = { ...resumeData, hobbies };
 
-    // Determine the API URL and method based on whether it's an edit or create operation
-    const url = isEdit
-      ? `${import.meta.env.VITE_BASEURL}/resume/${resumeData._id}`
-      : `${import.meta.env.VITE_BASEURL}/resume/`;
-    const method = isEdit ? "put" : "post";
-
     try {
-      const config = {
-        method: method,
-        url: url,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-        data: updatedResumeData,
-      };
+      let response;
+      if (isEdit) {
+        response = await updateResume(updatedResumeData); 
+        console.log("updated");// Update existing resume
+      } else {
+        response = await createResume(updatedResumeData); // Create new resume
+        console.log("created");
+      }
 
-      const response = await axios.request(config);
-      console.log("Resume saved:", response.data);
+      console.log("Resume saved:", response);
       setSuccess(true); // Show success message
       setError(null); // Clear any previous errors
     } catch (error) {
