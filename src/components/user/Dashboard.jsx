@@ -116,11 +116,11 @@ function Dashboard() {
         </div>
       )}
 
-      <div className="mx-4 my-8 min-h-[90vh] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="mx-4 my-8 min-h-[90vh] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20">
         {/* Add New Resume Card */}
         <Link
           to="/templates"
-          className="w-full mt-[15vh] h-60 md:h-64 border border-purple-600 rounded-lg flex justify-center items-center text-4xl shadow-lg hover:shadow-purple-400 hover:shadow-lg cursor-pointer"
+          className="w-full mt-[15vh] h-[60vh] md:h-[50vh] border border-purple-600 rounded-lg flex justify-center items-center text-4xl shadow-lg hover:shadow-purple-400 hover:shadow-lg cursor-pointer"
         >
           +
         </Link>
@@ -130,7 +130,7 @@ function Dashboard() {
           resumeData.resumes.map((resume) => (
             <div
               key={resume._id} // Use _id as the key
-              className="w-full mt-[15vh] h-48 md:h-64 border border-purple-600 rounded-lg flex flex-col justify-between text-center text-xl md:text-2xl shadow-lg hover:shadow-purple-300 hover:shadow-lg cursor-pointer"
+              className="w-full mt-[15vh] h-[60vh] md:h-[50vh] border border-purple-600 rounded-lg flex flex-col justify-between text-center text-xl md:text-2xl shadow-lg hover:shadow-purple-300 hover:shadow-lg cursor-pointer"
               style={{
                 backgroundImage:
                   "url('https://s3.resume.io/cdn-cgi/image/width=380,dpr=1,format=auto/uploads/local_template_image/image/383/persistent-resource/santiago-resume-templates.jpg?v=1656070649')",

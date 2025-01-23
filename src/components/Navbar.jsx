@@ -1,48 +1,57 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userContext } from "./context/UserContext";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { HashLoader } from "react-spinners";
 
 const Navbar = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // For user profile dropdown
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // For mobile menu
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const dropdownRef = useRef(null);
-  const {userData,loading}=useContext(userContext);
+  const mobileMenuRef = useRef(null);
+  const { userData } = useContext(userContext);
 
   const profilePictureUrl = userData?.profilePicture
-        ? `${import.meta.env.VITE_BASEURL}/${userData.profilePicture.replace(/\\/g, '/')}`
-        : 'https://static.vecteezy.com/system/resources/previews/020/765/399/large_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg'; // Fallback image
+    ? `${import.meta.env.VITE_BASEURL}/${userData.profilePicture.replace(/\\/g, "/")}`
+    : "https://static.vecteezy.com/system/resources/previews/020/765/399/large_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
 
-  const navigate=useNavigate();
-  // Function to toggle dropdown visibility
+  const navigate = useNavigate();
+
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  // Function to toggle mobile menu visibility
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-  const handleLogout=()=>{
-    localStorage.removeItem("token");
-    setIsDropdownOpen(false);
-    navigate("/");
-  }
 
-  // Close dropdown and mobile menu when clicking outside
+  const handleLogout = () => {
+    setIsLoggingOut(true);
+    setTimeout(() => {
+      localStorage.removeItem("token");
+      setIsDropdownOpen(false);
+      setIsLoggingOut(false);
+      navigate("/");
+    }, 1500);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
       }
-      if (isMobileMenuOpen && !event.target.closest(".mobile-menu-button")) {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target) &&
+        !event.target.closest(".mobile-menu-button")
+      ) {
         setIsMobileMenuOpen(false);
       }
     };
 
-    // Add event listener for clicks outside the dropdown and mobile menu
     document.addEventListener("mousedown", handleClickOutside);
-
-    // Cleanup the event listener
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -50,14 +59,26 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-lg fixed top-0 left-0 w-screen min-h-[10vh] mb-3 z-[2]">
+      {/* ToastContainer with proper configuration */}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000} // Toast will auto-close after 3 seconds
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo and Text */}
           <div className="flex items-center">
             <img
-              src="logo.webp" // Path to your logo image
+              src="logo.webp"
               alt="Logo"
-              className="h-16 rounded-full p-2" // Adjust styling as needed
+              className="h-16 rounded-full p-2"
             />
             <Link to="/" className="text-2xl font-bold text-purple-600">
               ResumeBuilder
@@ -66,90 +87,65 @@ const Navbar = () => {
 
           {/* Navigation Links (Desktop) */}
           <div className="hidden md:flex items-center space-x-8">
-          <Link
-              to="/"
-              className="text-gray-700 hover:text-purple-600 font-medium"
-            >
+            <Link to="/" className="text-gray-700 hover:text-purple-600 font-medium">
               Home
             </Link>
-            {localStorage.getItem("token")&&<Link
-              to="/dashboard"
-              className="text-gray-700 hover:text-purple-600 font-medium"
-            >
-              Dashboard
-            </Link>}
-            <Link
-              to="/templates"
-              className="text-gray-700 hover:text-purple-600 font-medium"
-            >
+            {localStorage.getItem("token") && (
+              <Link to="/dashboard" className="text-gray-700 hover:text-purple-600 font-medium">
+                Dashboard
+              </Link>
+            )}
+            <Link to="/templates" className="text-gray-700 hover:text-purple-600 font-medium">
               Templates
             </Link>
-            <Link
-              to="/about"
-              className="text-gray-700 hover:text-purple-600 font-medium"
-            >
+            <Link to="/about" className="text-gray-700 hover:text-purple-600 font-medium">
               About
             </Link>
-            <Link
-              to="/contact"
-              className="text-gray-700 hover:text-purple-600 font-medium"
-            >
+            <Link to="/contact" className="text-gray-700 hover:text-purple-600 font-medium">
               Contact
             </Link>
           </div>
 
-          {/* User Profile Section */}{
-            localStorage.getItem("token")?
-          
-          <div className="hidden md:flex items-center" ref={dropdownRef}>
-            <div className="relative">
-              <button
-                onClick={toggleDropdown}
-                className="flex items-center focus:outline-none"
-              >
-                <img
-                  src={profilePictureUrl} // Replace with user profile image
-                  alt="User Profile"
-                  className="rounded-full h-10 w-10"
-                />
-                {/* <span className="ml-2 text-gray-700 font-medium">John Doe</span> */}
-                {/* <svg
-                  className="ml-2 h-5 w-5 text-gray-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 9l-7 7-7-7"
+          {/* User Profile Section */}
+          {localStorage.getItem("token") ? (
+            <div className="hidden md:flex items-center" ref={dropdownRef}>
+              <div className="relative">
+                <button onClick={toggleDropdown} className="flex items-center focus:outline-none">
+                  <img
+                    src={profilePictureUrl}
+                    alt="User Profile"
+                    className="rounded-full h-10 w-10"
                   />
-                </svg> */}
-              </button>
+                </button>
 
-              {/* Dropdown Menu */}
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
-                  <Link
-                    to="/profile"
-                    className="block w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  >
-                    Profile
-                  </Link>
-                  
-                  <button
-                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
+                {/* Dropdown Menu */}
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
+                    <Link
+                      to="/profile"
+                      className="block w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    >
+                      Profile
+                    </Link>
+                    <button
+                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      onClick={handleLogout}
+                    >
+                      {isLoggingOut ? (
+                        <HashLoader size={20} color="#6D28D9" />
+                      ) : (
+                        "Logout"
+                      )}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-          : <div className="flex items-center"><Link to='/login'>Login/Signup</Link></div>}
+          ) : (
+            <div className="flex items-center">
+              <Link to="/login">Login/Signup</Link>
+            </div>
+          )}
 
           {/* Mobile Menu Button */}
           <div className="flex items-center md:hidden">
@@ -177,36 +173,73 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div className={`md:hidden ${isMobileMenuOpen ? "block" : "hidden"}`}>
+      <div
+        ref={mobileMenuRef}
+        className={`md:hidden ${isMobileMenuOpen ? "block" : "hidden"} bg-white shadow-lg`}
+      >
         <div className="px-2 pt-2 pb-3 space-y-1">
           <Link
-            to="/create-resume"
+            to="/"
             className="block text-gray-700 hover:text-purple-600 font-medium"
-            onClick={() => setIsMobileMenuOpen(false)} // Close menu on click
+            onClick={() => setIsMobileMenuOpen(false)}
           >
-            Create Resume
+            Home
           </Link>
+          {localStorage.getItem("token") && (
+            <Link
+              to="/dashboard"
+              className="block text-gray-700 hover:text-purple-600 font-medium"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Dashboard
+            </Link>
+          )}
           <Link
             to="/templates"
             className="block text-gray-700 hover:text-purple-600 font-medium"
-            onClick={() => setIsMobileMenuOpen(false)} // Close menu on click
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Templates
           </Link>
           <Link
             to="/about"
             className="block text-gray-700 hover:text-purple-600 font-medium"
-            onClick={() => setIsMobileMenuOpen(false)} // Close menu on click
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             About
           </Link>
           <Link
             to="/contact"
             className="block text-gray-700 hover:text-purple-600 font-medium"
-            onClick={() => setIsMobileMenuOpen(false)} // Close menu on click
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Contact
           </Link>
+          {localStorage.getItem("token") ? (
+            <>
+              <Link
+                to="/profile"
+                className="block text-gray-700 hover:text-purple-600 font-medium"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Profile
+              </Link>
+              <button
+                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                onClick={handleLogout}
+              >
+                {isLoggingOut ? (
+                  <HashLoader size={20} color="#6D28D9" />
+                ) : (
+                  "Logout"
+                )}
+              </button>
+            </>
+          ) : (
+            <Link to="/login" className="block text-gray-700 hover:text-purple-600 font-medium">
+              Login/Signup
+            </Link>
+          )}
         </div>
       </div>
     </nav>

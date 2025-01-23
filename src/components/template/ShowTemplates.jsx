@@ -43,7 +43,7 @@ function ShowTemplates() {
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat' // Centers the image
                     }}
-                    className='w-full h-48 md:h-64 border border-purple-600 rounded-lg flex justify-center items-center text-2xl md:text-4xl text-white font-bold shadow-lg hover:shadow-purple-300 hover:shadow-xl cursor-pointer transition-shadow duration-300 relative'
+                    className='w-full h-[70vh] md:h-[60vh] border border-purple-600 rounded-lg flex justify-center items-center text-2xl md:text-4xl text-white font-bold shadow-lg hover:shadow-purple-300 hover:shadow-xl cursor-pointer transition-shadow duration-300 relative'
                 >
                     {/* Overlay for better text visibility */}
                     <div className='absolute inset-0 bg-black bg-opacity-30 rounded-lg'></div>

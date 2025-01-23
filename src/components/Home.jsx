@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css"; // Import toast CSS (optional fo
 
 export default function Home() {
   return (
-    <div className="w-screen bg-gray-100">
+    <div className="w-screen bg-gray-100 mt-[10vh] md:mt-0">
       {/* ToastContainer (optional for future use) */}
       <ToastContainer
         position="bottom-right"
@@ -46,14 +46,14 @@ export default function Home() {
             <Link to="/templates">
               <button
                 aria-label="Create New Resume"
-                className="border rounded-xl text-white px-8 py-2 my-3 mx-3 bg-primary hover:scale-105 hover:bg-secondary-400 w-full md:w-auto"
+                className="border rounded-xl text-white px-8 py-2 my-3  bg-primary hover:scale-105 hover:bg-secondary-400 w-full md:w-auto"
               >
                 Create New Resume
               </button>
             </Link>
             <Link to="/dashboard"
               aria-label="Improve Resume"
-              className="border rounded-xl px-8 py-2 my-3 border border-primary hover:scale-110 hover:bg-white w-full md:w-auto"
+              className="border rounded-xl px-8 py-2 my-3 border border-primary hover:scale-110 hover:bg-white w-full md:w-auto text-center"
             >
               Improve Resume
             </Link>
