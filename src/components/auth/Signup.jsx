@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { Link, useNavigate } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -92,7 +90,7 @@ export default function SignUp() {
         console.log(error);
         if (error.response) {
           // Server responded with a status code outside 2xx
-          toast.error(`Signup failed: ${error.response.data.message || "Unknown error"}`); // Error toast
+          toast.error(`Signup failed: ${error.response.data?.msg ||error.response.data.errors[0].msg|| "Unknown error"}`); // Error toast
         } else if (error.request) {
           // No response received
           toast.error("Network error. Please try again."); // Network error toast
@@ -108,7 +106,7 @@ export default function SignUp() {
 
   return (
     <Container component="main" maxWidth="lg">
-      <ToastContainer position="top-center" autoClose={3000} /> {/* Toast container */}
+      <ToastContainer position="bottom-right" autoClose={3000} /> {/* Toast container */}
       <Box
         sx={{
           marginTop: 20,

@@ -61,14 +61,15 @@ export default function Login() {
       .catch((error) => {
         console.log(error);
         if (error.response) {
-          // Server responded with a status code outside 2xx
-          toast.error(`Login failed: ${error.response.data.message || "Unknown error"}`); // Error toast
+          // Extract error message from API response
+          const errorMessage = error.response.data?.msg || "Unknown error occurred";
+          toast.error(`Login failed: ${errorMessage}`);
         } else if (error.request) {
           // No response received
-          toast.error("Network error. Please try again."); // Network error toast
+          toast.error("Network error. Please check your connection and try again.");
         } else {
-          // Something else went wrong
-          toast.error("An unexpected error occurred."); // Generic error toast
+          // Other errors (e.g., request setup issues)
+          toast.error(`An unexpected error occurred: ${error.message}`);
         }
       })
       .finally(() => {
