@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css"; // Import toast CSS (optional fo
 
 export default function Home() {
   return (
-    <div className="w-screen bg-gray-100 mt-[10vh] md:mt-0">
+    <div className="w-screen mt-[10vh] md:mt-0">
       {/* ToastContainer (optional for future use) */}
       <ToastContainer
         position="bottom-right"
@@ -23,9 +23,9 @@ export default function Home() {
       <div className="flex flex-col md:flex-row-reverse justify-center items-center w-full min-h-[90vh] px-4 mt-7">
         <div className="w-full md:w-[50vw]">
           <img
-            src="hero2.avif"
+            src="Resume.gif"
             className="w-full h-auto"
-            alt="Person holding a resume"
+            alt="hero image"
           />
         </div>
 
@@ -101,20 +101,20 @@ export default function Home() {
       </div>
 
       {/* Resume Example Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 bg-gray-200 rounded-lg shadow-lg h-[90vh]">
+      <div className="grid grid-cols-1 md:grid-cols-2  rounded-lg shadow-lg h-[90vh]">
         <div>
           <img
-            src="resume.png"
-            alt="Example of a professional resume"
+            src="resumes.gif"
+            alt="resume image"
             className="w-full h-[90vh]"
           />
         </div>
-        <div className="text-center p-8 flex flex-col justify-center bg-gray-200">
+        <div className="text-center p-8 flex flex-col justify-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
             Change Your Resume. Change Your Life.
           </h1>
           <p className="text-lg text-gray-700 mb-6">
-            <strong>Your Website Name Resume Builder</strong> – Not just a tool,
+            <strong>Resume Craft</strong> – Not just a tool,
             but a personal career expert. Your resume deserves to stand out, and
             we’re here to help you make it happen. With our expertly designed
             templates, you can give your resume a fresh look and highlight your

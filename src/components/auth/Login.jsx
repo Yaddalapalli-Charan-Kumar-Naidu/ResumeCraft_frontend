@@ -83,46 +83,65 @@ export default function Login() {
       <Box
         sx={{
           marginTop: 15,
+          marginBottom:10
         }}
       >
         <Grid container>
           <CssBaseline />
           <Grid
             item
-            xs={false}
-            sm={4}
+            xs={12}
             md={7}
             sx={{
-              backgroundImage: "url(login.jpeg)",
+              display: { xs: 'flex', md: 'none' },
+              justifyContent: 'center',
+              alignItems: 'center',
+              maxHeight: 300
+            }}
+          >
+            <img
+              src="login.gif"
+              alt="signin illustration"
+              style={{
+                width: '100%',
+                height: 'auto',
+                maxWidth: 500,
+                objectFit: 'contain'
+              }}
+            />
+          </Grid>
+
+          {/* Desktop Image */}
+          <Grid
+            item
+            xs={false}
+            md={7}
+            sx={{
+              display: { xs: 'none', md: 'block' },
+              backgroundImage: "url(login.gif)",
               backgroundRepeat: "no-repeat",
-              backgroundColor: (t) =>
-                t.palette.mode === "light"
-                  ? t.palette.grey[50]
-                  : t.palette.grey[900],
-              backgroundSize: "cover",
+              backgroundSize: "contain",
               backgroundPosition: "center",
             }}
           />
+
+          {/* Form Section */}
           <Grid
             item
             xs={12}
-            sm={8}
             md={5}
             component={Paper}
             elevation={6}
             square
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
+            }}
           >
-            <Box
-              sx={{
-                my: 8,
-                mx: 4,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
+            <Box sx={{ my: 8, mx: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Typography component="h1" variant="h5">
-                Sign in
+                Sign In
               </Typography>
               <Box
                 component="form"

@@ -109,7 +109,7 @@ export default function SignUp() {
       <ToastContainer position="bottom-right" autoClose={3000} /> {/* Toast container */}
       <Box
         sx={{
-          marginTop: 20,
+          marginTop: 10,
           marginBottom: 5,
         }}
       >
@@ -117,38 +117,56 @@ export default function SignUp() {
           <CssBaseline />
           <Grid
             item
-            xs={false}
-            sm={4}
+            xs={12}
             md={7}
             sx={{
-              backgroundImage: "url(login.jpeg)",
+              display: { xs: 'flex', md: 'none' },
+              justifyContent: 'center',
+              alignItems: 'center',
+              maxHeight: 300
+            }}
+          >
+            <img
+              src="signup.svg"
+              alt="signup illustration"
+              style={{
+                width: '100%',
+                height: 'auto',
+                maxWidth: 500,
+                objectFit: 'contain'
+              }}
+            />
+          </Grid>
+
+          {/* Desktop Image */}
+          <Grid
+            item
+            xs={false}
+            md={7}
+            sx={{
+              display: { xs: 'none', md: 'block' },
+              backgroundImage: "url(signup.svg)",
               backgroundRepeat: "no-repeat",
-              backgroundColor: (t) =>
-                t.palette.mode === "light"
-                  ? t.palette.grey[50]
-                  : t.palette.grey[900],
-              backgroundSize: "cover",
+              backgroundSize: "contain",
               backgroundPosition: "center",
             }}
           />
+
+          {/* Form Section */}
           <Grid
             item
             xs={12}
-            sm={8}
             md={5}
             component={Paper}
             elevation={6}
             square
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
+            }}
           >
-            <Box
-              sx={{
-                my: 8,
-                mx: 4,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
+            <Box sx={{ my: 8, mx: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Typography component="h1" variant="h5">
                 Sign Up
               </Typography>
