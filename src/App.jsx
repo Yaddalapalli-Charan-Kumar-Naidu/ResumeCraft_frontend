@@ -6,7 +6,7 @@ import PageNotFound from './components/Error/PageNotFound';
 import { UserProvider } from './components/context/UserContext';
 import { ResumeProvider } from './components/context/ResumeContext';
 import ProtectedRoute from './ProtectedRoute';
-
+import ForgotPassword from './components/auth/ForgotPassword';
 // Lazy load components for better performance
 const Login = lazy(() => import('./components/auth/Login'));
 const Signup = lazy(() => import('./components/auth/Signup'));
@@ -29,6 +29,7 @@ function App() {
               <Route path='/login' element={<Login />} />
               <Route path='/signup' element={<Signup />} />
               <Route path='/verify-otp' element={<VerifyOtp />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
 
               {/* Private routes */}
               <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
@@ -36,7 +37,6 @@ function App() {
               <Route path='/templates' element={<ProtectedRoute><ShowTemplates /></ProtectedRoute>} />
               <Route path='/create-resume/:templateId' element={<ProtectedRoute><CreateResume /></ProtectedRoute>} />
               <Route path='/resume/:templateId' element={<ProtectedRoute><CreateResume /></ProtectedRoute>} />
-
               {/* 404 page */}
               <Route path="*" element={<PageNotFound />} />
             </Routes>

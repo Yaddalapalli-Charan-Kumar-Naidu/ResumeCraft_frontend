@@ -15,10 +15,13 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HashLoader from 'react-spinners/HashLoader';
 
+
+
 export default function Login() {
   const BASEURL = import.meta.env.VITE_BASEURL;
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false); // State for loader
+ 
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -74,7 +77,7 @@ export default function Login() {
         setIsSubmitting(false); // Hide loader
       });
   };
-
+  
   return (
     <Container component="main" maxWidth="lg">
       <ToastContainer position="bottom-right" autoClose={3000} /> {/* Toast container */}
@@ -148,10 +151,7 @@ export default function Login() {
                   id="password"
                   autoComplete="current-password"
                 />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
+                
                 <Button
                   type="submit"
                   fullWidth
@@ -163,7 +163,7 @@ export default function Login() {
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <Link to="#" variant="body2">
+                    <Link to="/forgot-password" variant="body2">
                       Forgot password?
                     </Link>
                   </Grid>

@@ -90,7 +90,7 @@ setIsSubmitting(true);
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `http://localhost:8268/auth/forgot-password`,
+      url: `${import.meta.env.VITE_BASEURL}/auth/forgot-password`,
       headers: {
         "Content-Type": "application/json",
       },

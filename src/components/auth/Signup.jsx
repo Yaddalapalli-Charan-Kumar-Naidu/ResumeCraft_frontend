@@ -258,10 +258,7 @@ export default function SignUp() {
                   error={!!errors.phoneNumber}
                   helperText={errors.phoneNumber}
                 />
-                <FormControlLabel
-                  control={<Checkbox value="agree" color="primary" />}
-                  label="I agree to the terms and conditions"
-                />
+                
                 <Button
                   type="submit"
                   fullWidth
