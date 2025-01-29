@@ -142,7 +142,7 @@ const Navbar = () => {
               </div>
             </div>
           ) : (
-            <div className="flex items-center">
+            <div className="hidden md:flex items-center">
               <Link to="/login">Login/Signup</Link>
             </div>
           )}
@@ -236,9 +236,13 @@ const Navbar = () => {
               </button>
             </>
           ) : (
-            <Link to="/login" className="block text-gray-700 hover:text-purple-600 font-medium">
-              Login/Signup
-            </Link>
+            <Link
+            to="/login"
+            className="block text-gray-700 hover:text-purple-600 font-medium"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Login/Signup
+          </Link>
           )}
         </div>
       </div>
