@@ -46,7 +46,7 @@ export default function Login() {
     axios
       .request(config)
       .then((response) => {
-        if(response.data.isVerified===true){
+        if(response.data.isVerified==true){
         console.log(JSON.stringify(response.data));
         localStorage.setItem("token", response.data.token);
         toast.success("Login successful! Redirecting..."); // Success toast
