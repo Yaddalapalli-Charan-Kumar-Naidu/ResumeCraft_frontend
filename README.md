@@ -10,4 +10,3 @@ Features:
     =>Provide real-time previews of the resume while editing.
     Offer features to download the resume in PDF format or share a link directly.
     =>Allow registered users to save and manage multiple resumes.
-    =>Include optional tips and examples to guide users in writing impactful content for their resumes
