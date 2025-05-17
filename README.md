@@ -5,8 +5,9 @@ The goal of this project is to build an Online Resume Builder using the MERN (Mo
 resumes effortlessly.
 
 Features:
+
     =>Allow users to choose from various pre-designed resume templates.
     =>Enable users to input their details (e.g., education, experience, skills) through a user-friendly form.
     =>Provide real-time previews of the resume while editing.
-    Offer features to download the resume in PDF format or share a link directly.
+    =>Offer features to download the resume in PDF format or share a link directly
     =>Allow registered users to save and manage multiple resumes.
